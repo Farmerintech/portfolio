@@ -22,7 +22,7 @@ export const MenuIcons = () =>{
                 ))
             }
         </div>
-        <div className="absolute bottom-20 w-[10%] flex flex-col gap-5 p-3">
+        <div className="absolute bottom-[50px] w-[10%] flex flex-col gap-5 p-3">
             <div>
                 <BiUserCircle size={20}/>
             </div>

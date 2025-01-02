@@ -108,9 +108,17 @@ button:focus-visible {
   left: 20px;
   width: 4px;
   height: 100%;
+  background: #4a5568;
+}
+.timeline-light::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 4px;
+  height: 100%;
   background: white;
 }
-
 .timeline-item {
   position: relative;
   margin-bottom: 20px;

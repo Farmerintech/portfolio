@@ -13,36 +13,27 @@ export const About = () =>{
                 <div className="">
                 <Main/>
                 </div>
-            <div className="absolute left-[20%] top-[15%] z-2">
-                <button onClick={changeTheme}>
-                    change
-                </button>
+            <div className="absolute left-[20%] top-[15%] z-2 mt-10">
+                
                 <div className="timeline">
         <div className="timeline-item">
             <div className="timeline-dot"></div>
-            <div className="timeline-content">
-                <h3>Virtuous Tech Enterprise</h3>
-                <p>Remote: Edo State, Nigeria</p>
-                <p>Frontend Developer with React</p>
+            <div className="">
+                <h3>Cypherdev Technologies</h3>
+                <p>Type: Learning-experience</p>
+                <p>Physical: Kwara State, Nigeria</p>
+                <p>Backend Developement with Nodejs</p>
                 <p>2024 - Present</p>
             </div>
         </div>
         <div className="timeline-item">
             <div className="timeline-dot"></div>
-            <div className="timeline-content">
-                <h3>SKI MUSIC</h3>
-                <p>Remote: Lagos State, Nigeria</p>
-                <p>Lead Mobile App Developer</p>
+            <div className="">
+                <h3>Frontend Skills</h3>
+                <p>Type: Learning-experience</p>
+                <p>Physical: Kwara State, Nigeria</p>
+                <p>Frontend Developement with React</p>
                 <p>2024</p>
-            </div>
-        </div>
-        <div className="timeline-item">
-            <div className="timeline-dot"></div>
-            <div className="timeline-content">
-                <h3>BIG Foundation (MY GRIND APP)</h3>
-                <p>Remote: Lagos State, Nigeria</p>
-                <p>Lead Developer</p>
-                <p>2023</p>
             </div>
         </div>
     </div>

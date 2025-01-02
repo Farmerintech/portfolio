@@ -26,11 +26,14 @@ export const Header = () => {
                 placeholder="<farmerinTech/>"/>
             </div>
             </div>
-            <div className="flex-1 flex-col w-full z-20 absolute left-[10%] md:left-[253px]">
+            <div className="flex-1 flex-col w-full z-20 absolute left-[9%] md:left-[253px]">
             <ul className={`${Theme === 'light' ? "bg-gray-50 text-black" : "bg-gray-800 text-white"} p-1 mr-5 flex justify-start gap-2 overflow-x-auto custom-scrollbar w-[90%] md:w-full `}>
                 {
                      imageIcons.map(image =>(
-                        <Link to='/' className={`${Theme === 'light' ? "border-white text-black" : "border-gray-900 text-white"} md:border-r p-2 `}>
+                        <Link to={
+                            image.name === 'home.tsx'? '/': image.name ==='about.html' ? '/about':
+                            image.name ==='resume.js' ? '/resume' : image.name ==='project.json' ? '/projects':'github'
+                         } className={`${Theme === 'light' ? "border-white text-black" : "border-gray-900 text-white"} md:border-r p-2 `}>
                             <li className={`flex gap-2 items-center justify-start text-sm w-[150px]`} key={image.name}>
                             <img src={image.icon} alt={image.name} className="w-[20px]"/>
                             <span>{image.name}</span>
