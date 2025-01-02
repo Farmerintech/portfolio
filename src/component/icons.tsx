@@ -3,8 +3,8 @@ import JS_icon from "../assets/js_icon.svg"
 import JSON_icon from "../assets/json_icon.svg"
 import REACT_icon from "../assets/react_icon.svg"
 import GITHUB_icon from "../assets/markdown_icon.svg"
-import { BiGitBranch, BiLogoTiktok, BiUserCircle,} from "react-icons/bi"
-import { FiCopy, FiFacebook, FiGithub, FiLinkedin, FiMail, FiSettings, FiTwitter } from "react-icons/fi"
+import {  BiLogoTiktok, } from "react-icons/bi"
+import { FiCopy, FiFacebook, FiGithub, FiLinkedin, FiMail, FiTwitter } from "react-icons/fi"
 
 export const imageIcons = [
     {

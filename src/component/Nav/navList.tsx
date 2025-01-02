@@ -7,7 +7,7 @@ export const NavList = () =>{
        <ul className="hidden md:block w-[200px] pl-5 pt-2">
         <h3 className="hidden md:block">EXPLORER</h3>
         <p className="flex items-center">
-            <BiChevronDown/>
+           { true ? <BiChevronDown/> : <BiChevronUp/>}
             Portfolio
             </p>
          {

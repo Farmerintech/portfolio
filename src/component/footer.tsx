@@ -1,7 +1,7 @@
 import { useContext } from "react"
-import { BiGitBranch, BiNotification, BiX } from "react-icons/bi"
+import { BiGitBranch } from "react-icons/bi"
 import { ThemeContext } from "../context/themeContext"
-import { MdNotifications, MdOutlineNotifications } from "react-icons/md"
+import {MdOutlineNotifications } from "react-icons/md"
 
 export const Footer = () =>{
     const {Theme} = useContext(ThemeContext)
@@ -15,7 +15,7 @@ export const Footer = () =>{
               </div>
               <div className="flex items-center justify-between gap-8">
                 <p>{"{} TypeScript JSX"}</p>
-                <MdOutlineNotifications/>
+                <MdOutlineNotifications/> 
               </div>
             </div>
         </section>
