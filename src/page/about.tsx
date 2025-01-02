@@ -4,7 +4,7 @@ import { Main } from "../component/aside"
 import { Header } from "../component/header"
 
 export const About = () =>{
-    const {Theme, changeTheme} = useContext(ThemeContext)
+    const {Theme,} = useContext(ThemeContext)
     return(
         <section className={`${Theme === 'light' ? "bg-white text-black" : "bg-gray-800 text-white"} w-full 
         min-h-screen flex flex-col`}>
