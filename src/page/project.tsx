@@ -4,7 +4,6 @@ import { Header } from '../component/header';
 import { ProjectCard } from '../component/projectCrad';
 import { projectData } from '../data/projectdata';
 import { ThemeContext } from '../context/themeContext';
-import { Link } from 'react-router';
 
 export const Projects = () => {
   const { Theme } = useContext(ThemeContext);
