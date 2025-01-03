@@ -5,7 +5,6 @@ import { ThemeContext } from "../context/themeContext";
 import { BiUserCircle } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { Link } from "react-router";
-import { FiCopy, FiFacebook, FiGithub, FiTwitter } from "react-icons/fi"
 
 export const MenuIcons = () =>{
     const { Theme } = useContext(ThemeContext);
