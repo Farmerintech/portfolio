@@ -18,10 +18,8 @@ export const MenuIcons = () =>{
             {
                 icons.map(icon =>(
                     <Link 
-                    to={icon === <FiCopy size={20}/> ? '/' : icon === <FiFacebook size={20}/> ? 'https://facebook/farmerintech'
-                        : icon === <FiGithub size={20}/> ? 'https://github.com/Farmerintech/' : icon === <FiTwitter size={20}/> ? 'https://x.com/farmerintech/' :''
-                    }>
-                        {icon}
+                    to={icon.url}>
+                        {icon.component}
                     </Link>
                 ))
             }
