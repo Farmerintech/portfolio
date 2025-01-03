@@ -15,7 +15,7 @@ export const About = () =>{
                 <div className="">
                 <Aside/>
                 </div>
-            <div className="absolute left-[20%] top-[15%] z-2 mt-10">
+            <div className="absolute md:left-[300px] lg:left-[280px]  left-[20%] top-[15%] z-2 mt-10">
                <div className="md:flex items-center justify-center p-5">
                  <div>
                     <img src={myphoto} alt='farmerintech' className="w-[200px] h-[200px] rounded-full border"/>
