@@ -9,7 +9,7 @@ export const projectData = [
           desktop: "link_to_desktop_demo"
         }
       ],
-      github_rep_link: "link_to_github_repository",
+      github_rep_link: "https://github.com/Farmerintech/social-media-app",
       Built_with: [
         "React",
         "Node.js",
@@ -17,11 +17,12 @@ export const projectData = [
         "MongoDB",
         "Tailwind CSS",
         "Vite"
-      ]
+      ],
+      project_link:"https://purple-7ai9.onrender.com"
     },
     {
       Id: 2,
-      name: "Full Stack App",
+      name: "Full Stack Image Uploader App",
       Description: "A full stack app developed with HTML, CSS, JavaScript, Node.js, Express, and MongoDB. Hosted on Render and Cloudinary (for file uploads).",
       Demo_image: [
         {
@@ -29,7 +30,7 @@ export const projectData = [
           desktop: "link_to_desktop_demo"
         }
       ],
-      github_rep_link: "link_to_github_repository",
+      github_rep_link: "https://github.com/Farmerintech/image-gallery",
       Built_with: [
         "HTML",
         "CSS",
@@ -38,7 +39,8 @@ export const projectData = [
         "Express",
         "MongoDB",
         "Cloudinary"
-      ]
+      ],
+      project_link:"https://image-gallery-e7lb.onrender.com/"
     },
     {
       Id: 3,
@@ -50,12 +52,14 @@ export const projectData = [
           desktop: "link_to_desktop_demo"
         }
       ],
-      github_rep_link: "link_to_github_repository",
+      github_rep_link: "https://github.com/Farmerintech/damystore",
       Built_with: [
         "React",
         "Vite",
         "Tailwind CSS"
-      ]
+      ],
+      project_link:"https://farmerintech.github.io/damystore"
+
     }
   ];
   

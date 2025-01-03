@@ -32,8 +32,8 @@ export const imageIcons = [
 
 export const icons = 
 [
-    <FiCopy  size={20}/>,
-    <FiTwitter  size={20}/>,
+    <FiCopy size={20}/>,
+    <FiTwitter size={20}/>,
     <FiGithub size={20}/>,
     <FiFacebook size={20}/>,
     <FiLinkedin size={20}/>,

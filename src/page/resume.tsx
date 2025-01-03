@@ -14,9 +14,9 @@ export const Resume = () =>{
                 <div className="">
                 <Aside/>
                 </div>
-            <div className="absolute lg:left-[280px] left-[20%] top-[15%] z-2 mt-10">
+            <div className="absolute md:left-[300px] lg:left-[280px] left-[20%] top-[15%] z-2 mt-10">
                 
-                <div className="timeline">
+        <div className="timeline">
         <div className="timeline-item">
             <div className="timeline-dot"></div>
             <div className="">

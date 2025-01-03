@@ -4,7 +4,8 @@ import { NavList } from "./Nav/navList"
 import { ThemeContext } from "../context/themeContext";
 import { BiUserCircle } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
-
+import { Link } from "react-router";
+import { FiCopy, FiFacebook, FiGithub, FiTwitter } from "react-icons/fi"
 
 export const MenuIcons = () =>{
     const { Theme } = useContext(ThemeContext);
@@ -13,12 +14,15 @@ export const MenuIcons = () =>{
     <>
     <aside className="min-h-screen flex gap-2 ">
     <div className={`${Theme==='light' ? 'bg-white md:bg-gray-50': 'bg-gray-800 md:bg-gray-700'}`}>
-        <div className={`w-[10%] flex flex-col gap-5 p-3`}>
+        <div className={`w-[10%] flex flex-col gap-5 p-3`} >
             {
                 icons.map(icon =>(
-                    <div>
+                    <Link 
+                    to={icon === <FiCopy size={20}/> ? '/' : icon === <FiFacebook size={20}/> ? 'https://facebook/farmerintech'
+                        : icon === <FiGithub size={20}/> ? 'https://github.com/Farmerintech/' : icon === <FiTwitter size={20}/> ? 'https://x.com/farmerintech/' :''
+                    }>
                         {icon}
-                    </div>
+                    </Link>
                 ))
             }
         </div>
