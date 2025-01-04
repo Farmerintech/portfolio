@@ -30,13 +30,12 @@ export const imageIcons = [
     }
 ]
 
-export const icons = 
-[
-    <FiCopy size={20}/>,
-    <FiTwitter size={20}/>,
-    <FiGithub size={20}/>,
-    <FiFacebook size={20}/>,
-    <FiLinkedin size={20}/>,
-    <BiLogoTiktok size={20}/>,
-    <FiMail size={20}/>,
-]
+export const icons = [
+    { component: <FiCopy size={20} />, url: '/' },
+    { component: <FiTwitter size={20} />, url: 'https://x.com/farmerintech/' },
+    { component: <FiGithub size={20} />, url: 'https://github.com/Farmerintech/' },
+    { component: <FiFacebook size={20} />, url: 'https://facebook.com/farmerintech/' },
+    { component: <FiLinkedin size={20} />, url: '#' }, // Replace with LinkedIn URL
+    { component: <BiLogoTiktok size={20} />, url: '#' }, // Replace with TikTok URL
+    { component: <FiMail size={20} />, url: 'mailto:yakubshakirudeenolaide2018@gmail.com' }, 
+];
