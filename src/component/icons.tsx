@@ -38,4 +38,9 @@ export const icons = [
     { component: <FiLinkedin size={20} />, url: '#' }, // Replace with LinkedIn URL
     { component: <BiLogoTiktok size={20} />, url: '#' }, // Replace with TikTok URL
     { component: <FiMail size={20} />, url: 'mailto:yakubshakirudeenolaide2018@gmail.com' }, 
+<<<<<<< HEAD
 ];
+=======
+];
+
+>>>>>>> 971e5a1933c7637a412091470a517a15c0007603

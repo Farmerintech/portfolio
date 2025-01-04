@@ -5,7 +5,6 @@ import { ThemeContext } from "../context/themeContext";
 import { BiUserCircle } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { Link } from "react-router";
-import { FiCopy, FiFacebook, FiGithub, FiTwitter } from "react-icons/fi"
 
 export const MenuIcons = () =>{
     const { Theme } = useContext(ThemeContext);
@@ -18,10 +17,8 @@ export const MenuIcons = () =>{
             {
                 icons.map(icon =>(
                     <Link 
-                    to={icon === <FiCopy size={20}/> ? '/' : icon === <FiFacebook size={20}/> ? 'https://facebook/farmerintech'
-                        : icon === <FiGithub size={20}/> ? 'https://github.com/Farmerintech/' : icon === <FiTwitter size={20}/> ? 'https://x.com/farmerintech/' :''
-                    }>
-                        {icon}
+                    to={icon.url}>
+                        {icon.component}
                     </Link>
                 ))
             }
