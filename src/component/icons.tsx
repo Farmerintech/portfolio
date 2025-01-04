@@ -35,12 +35,7 @@ export const icons = [
     { component: <FiTwitter size={20} />, url: 'https://x.com/farmerintech/' },
     { component: <FiGithub size={20} />, url: 'https://github.com/Farmerintech/' },
     { component: <FiFacebook size={20} />, url: 'https://facebook.com/farmerintech/' },
-    { component: <FiLinkedin size={20} />, url: '#' }, // Replace with LinkedIn URL
-    { component: <BiLogoTiktok size={20} />, url: '#' }, // Replace with TikTok URL
+    { component: <FiLinkedin size={20} />, url: '#' }, 
+    { component: <BiLogoTiktok size={20} />, url: '#' },
     { component: <FiMail size={20} />, url: 'mailto:yakubshakirudeenolaide2018@gmail.com' }, 
-<<<<<<< HEAD
 ];
-=======
-];
-
->>>>>>> 971e5a1933c7637a412091470a517a15c0007603
