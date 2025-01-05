@@ -29,13 +29,34 @@ export const imageIcons = [
         name:'github.md'
     }
 ]
-
+console.log(screen.width)
 export const icons = [
-    { component: <FiCopy size={20} />, url: '/' },
-    { component: <FiTwitter size={20} />, url: 'https://x.com/farmerintech/' },
-    { component: <FiGithub size={20} />, url: 'https://github.com/Farmerintech/' },
-    { component: <FiFacebook size={20} />, url: 'https://facebook.com/farmerintech/' },
-    { component: <FiLinkedin size={20} />, url: '#' }, 
-    { component: <BiLogoTiktok size={20} />, url: '#' },
-    { component: <FiMail size={20} />, url: 'mailto:yakubshakirudeenolaide2018@gmail.com' }, 
+    { 
+        component: <FiCopy size={screen.width > 980 ? 25: 20} />, 
+        url: '/' 
+    },
+    { 
+        component: <FiTwitter size={screen.width > 980 ? 25: 20} />, 
+        url: 'https://x.com/farmerintech/' 
+    },
+    { 
+        component: <FiGithub size={screen.width > 980 ? 25: 20}/>, 
+        url: 'https://github.com/Farmerintech/' 
+    },
+    { 
+        component: <FiFacebook size={screen.width > 980 ? 25: 20}/>, 
+        url: 'https://facebook.com/farmerintech/' 
+    },
+    { 
+        component: <FiLinkedin size={screen.width > 980 ? 25: 20}/>, 
+        url: '/' 
+    }, 
+    { 
+        component: <BiLogoTiktok size={screen.width > 980 ? 25: 20}/>, 
+        url: '/' 
+    },
+    { 
+        component: <FiMail size={screen.width > 980 ? 25: 20}/>, 
+        url: 'mailto:yakubshakirudeenolaide2018@gmail.com' 
+    }, 
 ];

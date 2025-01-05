@@ -25,11 +25,11 @@ export const MenuIcons = () =>{
         </div>
         <div className="absolute bottom-[20%] w-[10%] flex flex-col gap-5 p-3">
             <div>
-                <BiUserCircle size={20}/>
+                <BiUserCircle size={25}/>
             </div>
-            <div>
-                <FiSettings size={20}/>
-            </div>
+            <Link to='/settings'>
+                <FiSettings size={25}/>
+            </Link>
         </div>
     </div>
     <section className={`${Theme==='light' ? 'bg-white text-black md:border-white ' : 'bg-gray-800 text-stone-50 md:border-gray-900' 

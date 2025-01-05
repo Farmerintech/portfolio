@@ -14,7 +14,7 @@ export const Projects = () => {
       <div className="bg-white flex">
         <Aside />
       </div>
-      <div className="md:left-[300px] lg:left-[280px] left-[20%] top-[15%] z-2 mt-10 absolute">
+      <div className="md:left-[300px] lg:left-[280px] left-[10%] top-[15%] z-2 mt-10 absolute">
         <section className="flex flex-col md:flex-row md:flex-wrap justify-start items-center">
           {projectData.map((project, index) => (
             <div key={index} className="w-full md:w-1/2 p-2">

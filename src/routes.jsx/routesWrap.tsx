@@ -3,6 +3,7 @@ import { Home } from "../page/home"
 import { About } from "../page/about"
 import { Resume } from "../page/resume"
 import { Projects } from "../page/project"
+import { Settings } from "../page/settings"
 
 const Routes = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const Routes = createBrowserRouter([
   {
     path:'/projects',
     element:<Projects/>
+  },
+  {
+    path:'/settings',
+    element:<Settings/>
   }
 ])
 

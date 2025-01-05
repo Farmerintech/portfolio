@@ -15,10 +15,10 @@ interface ProjectCardProps {
 export const ProjectCard: React.FC<ProjectCardProps> = ({ name, description, built_with, Theme, Live_link, Github_link }) => {
   return (
     <section className={`${Theme === 'light' ? 'bg-white' : 'bg-gray-800'} p-4 m-2 rounded-lg shadow-lg`}>
-      <h3 className='font-bold text-2xl border-b-4 border-b-blue-600'>{name}</h3>
+      <h3 className='font-bold text-2xl border-b-4 border-b-blue-600 mb-5 '>{name}</h3>
       <p className='max-w-lg break-words'>{description}</p>
       <div className='flex gap-2 flex-wrap'>
-        <p className='mt-5'>Built With the following Technologies:</p>
+        <p className='mt-5 md:mt-0'>Built With the following Technologies:</p>
         {built_with.map((res, index) => (
           <p key={index} className={res === 'React' || res === 'HTML' ? 'text-blue-600' : res === 'CSS' || res === 'Tailwind CSS' ? 'text-purple-500' : res==='Node.js' || res==='MongoDB' ? "text-green-600": res==='JavaScript' ? 'text-yellow-500':'text-red-500'}>{res}</p>
         ))}
