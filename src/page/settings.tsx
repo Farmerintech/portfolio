@@ -19,6 +19,7 @@ export const Settings = ()=>{
                     <Aside/>
                 </div>
                 <div className="absolute md:left-[50%] lg:left-[50%]  left-[30%] top-[15%] z-2 mt-10 mb-10">
+                    <p className="text-center text-xl font-bold mb-4">Choose Theme</p>
                   <div className="flex justify-center items-center pb-10 mb-10">
                   <ChangeTheme/>
                   </div>
