@@ -3,6 +3,7 @@ import { ThemeContext } from "../context/themeContext";
 import { imageIcons } from "./icons";
 import { Link } from "react-router";
 import image from "../assets/portfolio.jpg"
+import { FiMoon, FiSun } from "react-icons/fi";
 export const Header = () => {
     const { Theme, changeTheme } = useContext(ThemeContext);
 
@@ -21,8 +22,8 @@ export const Header = () => {
                 <p
                 className={`
                     ${Theme === 'light' ? "" : "border-gray-700"} 
-                    my-2 rounded border md:w-1/2 bg-none outline-none text-center px-5 xs:px-0 `} 
-                    onClick={changeTheme}>{"< farmerinTech />"}</p>
+                    my-2 rounded border md:w-1/2 bg-none outline-none text-center px-5 xs:px-0 flex items-center justify-center gap-8`} 
+                    onClick={changeTheme}>{"< farmerinTech" }{Theme === 'light' ? <FiMoon size={20}/> : <FiSun size={20}/>} {">"}</p>
             </div>
             </div>
             <div className="flex-1 flex-col w-full z-20 absolute left-[9%] md:left-[253px]">

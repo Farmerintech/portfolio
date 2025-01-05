@@ -18,8 +18,8 @@ export const Settings = ()=>{
                 <div className="">
                     <Aside/>
                 </div>
-                <div className="absolute md:left-[50%] lg:left-[50%]  left-[25%] top-[15%] z-2 mt-10">
-                  <div className="flex justify-center items-center ">
+                <div className="absolute md:left-[50%] lg:left-[50%]  left-[30%] top-[15%] z-2 mt-10 mb-10">
+                  <div className="flex justify-center items-center pb-10 mb-10">
                   <ChangeTheme/>
                   </div>
                 </div>
