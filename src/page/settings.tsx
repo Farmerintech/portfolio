@@ -3,6 +3,7 @@ import { Aside } from "../component/aside"
 import { Header } from "../component/header"
 import { ThemeContext } from "../context/themeContext"
 import { ChangeTheme } from "../component/changeTheme"
+import { Footer } from "../component/footer"
 
 export const Settings = ()=>{
         
@@ -23,6 +24,7 @@ export const Settings = ()=>{
                   </div>
                 </div>
           </div>
+          <Footer/>
           </section>
         </>
     )

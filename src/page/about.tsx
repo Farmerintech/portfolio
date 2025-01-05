@@ -39,7 +39,7 @@ export const About = () =>{
                     practices and how i canmake use of innovative tech solution to combat major sustainable problems.
                  </p>
                </div>
-               <div className="p-5 w-full">
+               <div className="p-5 w-full mb-5">
                   <p className="font-bold text-2xl">Skills</p>
                   <div className="md:flex w-[100%] mt-5 ">
                   <div className="w-full md:w-1/2 pr-4">

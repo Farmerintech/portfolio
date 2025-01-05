@@ -7,7 +7,7 @@ export const Footer = () =>{
     const {Theme} = useContext(ThemeContext)
     return(
         <section className={`${Theme === 'light' ? "bg-white text-black" : "bg-gray-800 text-white"} 
-        fixed bottom-0 w-full z-20 `}>
+        fixed bottom-0 w-full z-20 p-2 `}>
             <div className="flex justify-between">
               <div className="flex items-center">
                 <BiGitBranch size={20}/>

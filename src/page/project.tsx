@@ -4,6 +4,7 @@ import { Header } from '../component/header';
 import { ProjectCard } from '../component/projectCrad';
 import { projectData } from '../data/projectdata';
 import { ThemeContext } from '../context/themeContext';
+import { Footer } from '../component/footer';
 
 export const Projects = () => {
   const { Theme } = useContext(ThemeContext);
@@ -14,8 +15,8 @@ export const Projects = () => {
       <div className="bg-white flex">
         <Aside />
       </div>
-      <div className="md:left-[300px] lg:left-[280px] left-[10%] top-[15%] z-2 mt-10 absolute">
-        <section className="flex flex-col md:flex-row md:flex-wrap justify-start items-center">
+      <div className="md:left-[300px] lg:left-[280px] left-[12%] top-[15%] z-2 mt-10 absolute">
+        <section className="flex flex-col md:flex-row md:flex-wrap justify-start items-center pb-10">
           {projectData.map((project, index) => (
             <div key={index} className="w-full md:w-1/2 p-2">
               <ProjectCard name={project.name} description={project.Description} 
@@ -24,6 +25,7 @@ export const Projects = () => {
           ))}
         </section>
       </div>
+      <Footer/>
     </section>
   );
 };
