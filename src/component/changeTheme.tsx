@@ -3,7 +3,7 @@ import { ThemeContext } from "../context/themeContext"
 import farmerintech from "../assets/farmerintech.png"
 import avater from "../assets/avater.jpg"
 import { FiMoon, FiSun } from "react-icons/fi"
-import { MdCheck, MdMarkChatRead } from "react-icons/md"
+import { MdCheck } from "react-icons/md"
 
 export const ChangeTheme = ()=>{
     const {Robiah, Farmerintech, Theme} = useContext(ThemeContext)
