@@ -61,6 +61,7 @@ h1 {
 .custom-scrollbar::-webkit-scrollbar {
   width:5px; /* Set the scrollbar width */
   height:2px;
+  scroll-behavior: smooth;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
