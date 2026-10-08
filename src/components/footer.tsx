@@ -31,7 +31,7 @@ export default function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <p className="font-mono text-sm font-bold">
-              yakub<span className="text-primary">.dev</span>
+              farmerintech<span className="text-primary">.dev</span>
             </p>
             <p className="mt-3 text-sm text-muted-foreground">
               Building practical web and mobile products.

@@ -155,7 +155,7 @@ export default function Nav() {
             <SheetContent side="right" className="w-[86%] sm:max-w-sm">
               <SheetHeader>
                 <SheetTitle className="font-mono">
-                  yakub<span className="text-primary">.dev</span>
+                  farmerintech<span className="text-primary">.dev</span>
                 </SheetTitle>
               </SheetHeader>
               <nav aria-label="Mobile" className="flex flex-col gap-1 px-4">

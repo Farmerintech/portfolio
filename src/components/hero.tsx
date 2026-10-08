@@ -201,12 +201,13 @@ export default function Hero() {
                   <i className="size-2.5 rounded-full bg-[#febc2e]" />
                   <i className="size-2.5 rounded-full bg-[#28c840]" />
                   <span className="ml-2 font-mono text-xs text-muted-foreground">
-                    yakub.ts
+                    farmerintech.ts
                   </span>
                 </div>
                 <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-7 sm:text-[13.5px]">
                   <code>
-                    <span className="text-muted-foreground">const</span> yakub
+                    <span className="text-muted-foreground">const</span>{" "}
+                    farmerintech
                     {" = {"}
                     {"\n"}
                     {"  "}role:{" "}

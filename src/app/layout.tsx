@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 
 import favicon from "@/favicon.jpg";
+import BackToTop from "@/components/back-to-top";
 import Footer from "@/components/footer";
 import Grain from "@/components/motion/grain";
 import ScrollProgress from "@/components/motion/scroll-progress";
@@ -134,6 +135,7 @@ export default function RootLayout({
           <Nav />
           <main id="main">{children}</main>
           <Footer />
+          <BackToTop />
         </Providers>
       </body>
     </html>
