@@ -68,7 +68,7 @@ export default function Nav() {
           href="/#home"
           className="font-mono text-sm font-bold tracking-tight"
         >
-          yakub
+          farmerintech
           <span className="text-brand-gradient">.dev</span>
         </Link>
 
