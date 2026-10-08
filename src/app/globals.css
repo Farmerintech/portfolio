@@ -1,0 +1,523 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================================
+   DARK MODE
+   The site switches themes with a `data-theme` attribute (set by the blocking
+   inline script in layout.tsx so there is no flash on load), not shadcn's
+   default `.dark` class. Teach Tailwind v4 to treat the attribute as `dark:`.
+   ========================================================================= */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ============================================================================
+   DESIGN TOKENS — "bold gradient / playful"
+   Brand gradient runs violet -> pink. It used to carry a third amber stop;
+   that was dropped from every gradient ramp because three hues spread over
+   every surface (page wipe, buttons, borders, bullets, code strings) read as
+   noise rather than intent. `--brand-3` survives as a warm accent for the
+   ambient mesh only. Add the stop back in the three ramps below to restore it.
+   Dark mode is designed, not inverted: brand hues are lightened so they don't
+   vibrate on a dark ground. Body-text contrast ratios are noted where they matter.
+   ========================================================================= */
+:root {
+  --radius: 1.25rem;
+
+  --background: #fcfaff;
+  --foreground: #1a1523; /* 16.9:1 on --background */
+
+  --card: #ffffff;
+  --card-foreground: #1a1523;
+  --popover: #ffffff;
+  --popover-foreground: #1a1523;
+
+  --muted: #f4effb;
+  --muted-foreground: #5b5470; /* 7.4:1 on --card */
+
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff; /* 5.2:1 on --primary */
+
+  --secondary: #db2777;
+  --secondary-foreground: #ffffff;
+
+  /* shadcn's `accent` is a subtle hover surface — NOT the brand colour.
+     The brand lives on `--primary` / `--brand-*`. */
+  --accent: #f4effb;
+  --accent-foreground: #2e1065;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e9e1f5;
+  --input: #e9e1f5;
+  --ring: #7c3aed;
+
+  --brand-1: #7c3aed;
+  --brand-2: #db2777;
+  --brand-3: #f59e0b;
+
+  --glow-1: color-mix(in oklch, var(--brand-1) 22%, transparent);
+  --glow-2: color-mix(in oklch, var(--brand-2) 17%, transparent);
+  --glow-3: color-mix(in oklch, var(--brand-3) 13%, transparent);
+
+  /* Raw elevation values live under --elev-* so the @theme block below can map
+     them into Tailwind's --shadow-* namespace. Naming them --shadow-* here and
+     mapping them to themselves would be self-referential and resolve to
+     nothing. */
+  --elev-soft: 0 1px 2px rgb(26 21 35 / 0.05), 0 10px 30px -14px rgb(26 21 35 / 0.18);
+  --elev-lift: 0 2px 4px rgb(26 21 35 / 0.06), 0 24px 60px -22px rgb(26 21 35 / 0.28);
+  --elev-glow: 0 18px 48px -18px color-mix(in oklch, var(--brand-1) 55%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --background: #0b0714;
+  --foreground: #f5f1ff; /* 18.2:1 on --background */
+
+  --card: #150e24;
+  --card-foreground: #f5f1ff;
+  --popover: #150e24;
+  --popover-foreground: #f5f1ff;
+
+  --muted: #1e1533;
+  --muted-foreground: #a99fc4; /* 8.1:1 on --background */
+
+  --primary: #a78bfa;
+  --primary-foreground: #1a0b33; /* 8.9:1 on --primary */
+
+  --secondary: #f472b6;
+  --secondary-foreground: #3b0722;
+
+  --accent: #1e1533;
+  --accent-foreground: #ede9fe;
+
+  --destructive: #f87171;
+  --destructive-foreground: #2a0505;
+
+  --border: #2a1f42;
+  --input: #2a1f42;
+  --ring: #a78bfa;
+
+  --brand-1: #a78bfa;
+  --brand-2: #ec4899;
+  --brand-3: #fbbf24;
+
+  --elev-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px -14px rgb(0 0 0 / 0.7);
+  --elev-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 24px 60px -22px rgb(0 0 0 / 0.85);
+  --elev-glow: 0 18px 48px -18px color-mix(in oklch, var(--brand-1) 70%, transparent);
+}
+
+/* ============================================================================
+   TAILWIND THEME MAPPING
+   `inline` keeps the var() reference in the generated utility so the dark-mode
+   overrides above actually take effect.
+   ========================================================================= */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand-1: var(--brand-1);
+  --color-brand-2: var(--brand-2);
+  --color-brand-3: var(--brand-3);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 14px);
+
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-outfit), var(--font-geist), system-ui, sans-serif;
+
+  --shadow-soft: var(--elev-soft);
+  --shadow-lift: var(--elev-lift);
+  --shadow-glow: var(--elev-glow);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================= */
+:root {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* These MUST sit in @layer base. Tailwind v4 emits utilities into
+   `@layer utilities`, and an unlayered rule beats a layered one regardless of
+   specificity — so a bare `*{border-color}` would silently override every
+   border-* utility (`border-primary/50`, `border-destructive`, …). */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+}
+
+html {
+  /* NOTE: deliberately no `scroll-behavior: smooth` — Lenis owns smooth
+     scrolling, and the two together produce double-eased, stuttering scroll.
+     Also deliberately no `overflow-x` here: on the root element it changes how
+     the scroll container is established and interacts unpredictably with
+     Lenis. Horizontal overflow is contained structurally instead, by the
+     `overflow-hidden` wrappers on the hero, the mesh and the marquee. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ----------------------------------------------------------------------------
+   LENIS — required base rules.
+   `scroll-behavior: auto !important` is the important one: our stylesheet must
+   never reintroduce smooth scrolling while Lenis is driving.
+   -------------------------------------------------------------------------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--brand-1) 32%, transparent);
+  color: var(--foreground);
+}
+
+/* Baseline focus ring for anything that doesn't bring its own. Layered so the
+   ring-based indicators on shadcn components and form fields win where present,
+   and this catches plain links and buttons that would otherwise show nothing. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* Theme swaps animate colour, but only while `.theme-anim` is on <html> —
+   theme-toggle adds it for ~350ms so we never pay transition cost globally. */
+html.theme-anim *,
+html.theme-anim *::before,
+html.theme-anim *::after {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease !important;
+}
+
+/* Slim, themed scrollbar (Lenis still drives the actual scrolling) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--brand-1) 45%, var(--border));
+  border: 3px solid var(--background);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-1);
+}
+
+/* ============================================================================
+   GRADIENT / SURFACE UTILITIES
+   ========================================================================= */
+
+/* The signature brand gradient. `in oklch` keeps the violet->pink->amber ramp
+   perceptually even instead of muddy through the midpoint. */
+.bg-brand-gradient {
+  background-image: linear-gradient(
+    115deg in oklch,
+    var(--brand-1) 0%,
+    var(--brand-2) 100%
+  );
+}
+
+.text-brand-gradient {
+  background-image: linear-gradient(
+    115deg in oklch,
+    var(--brand-1) 0%,
+    var(--brand-2) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Descenders get clipped by background-clip in some engines without this. */
+  padding-block: 0.08em;
+}
+
+/* Animated conic border for feature cards: a gradient ring that rotates. */
+.ring-gradient {
+  position: relative;
+}
+.ring-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg in oklch,
+    var(--brand-1),
+    var(--brand-2)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.32;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.ring-gradient:hover::before {
+  opacity: 1;
+}
+
+.glass {
+  background: color-mix(in oklch, var(--card) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
+
+/* ============================================================================
+   AMBIENT LAYERS (mesh + grain) — purely decorative, hidden when printing
+   ========================================================================= */
+
+/* Slow-drifting gradient blobs. Transform-only animation so it stays on the
+   compositor and never triggers layout. */
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -6%, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-5%, 4%, 0) scale(0.94);
+  }
+}
+.animate-blob {
+  animation: blob-drift var(--blob-duration, 22s) ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.animate-marquee {
+  animation: marquee-x var(--marquee-duration, 38s) linear infinite;
+}
+
+/* Gentle bob for the floating chips in the hero. `--float-rot` lets a rotated
+   element keep its tilt while it drifts. */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--float-rot, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(var(--float-rot, 0deg));
+  }
+}
+.animate-float {
+  animation: float-y var(--float-duration, 6s) ease-in-out infinite;
+}
+
+/* ----------------------------------------------------------------------------
+   PAGE TRANSITIONS
+   Deliberately pure CSS rather than framer-motion. Under reduced motion our
+   global rule collapses these to 0.01ms, and because both use `forwards`/`both`
+   fill modes they land on their *end* state — so the wipe can never get stuck
+   covering the page and content can never get stuck invisible.
+   -------------------------------------------------------------------------- */
+@keyframes page-wipe {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.animate-page-wipe {
+  animation: page-wipe 0.55s ease-out forwards;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-page-in {
+  animation: page-in 0.5s ease-out both;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+:root[data-theme="dark"] .grain::after {
+  opacity: 0.06;
+}
+
+/* ============================================================================
+   ACCESSIBILITY — reduced motion
+   Content must always be readable: anything animated in from `opacity: 0`
+   is forced visible, and all ambient loops stop.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-blob,
+  .animate-marquee,
+  .animate-float,
+  .animate-spin-slow {
+    animation: none !important;
+  }
+}
+
+/* ============================================================================
+   PRINT — only the resume page is meant to survive this
+   Every decorative layer is stripped so A4 output stays clean and light.
+   ========================================================================= */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    --background: #fff;
+    --foreground: #111;
+    --card: #fff;
+    --card-foreground: #111;
+    --muted: #f5f5f5;
+    --muted-foreground: #444;
+    --border: #d8d8d8;
+    --primary: #5b21b6;
+    --primary-foreground: #fff;
+    --elev-soft: none;
+    --elev-lift: none;
+    --elev-glow: none;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .no-print,
+  .grain::after,
+  .animate-blob,
+  .animate-marquee,
+  .animate-float,
+  .animate-spin-slow,
+  /* The page-transition wipe relies on `animation-fill-mode: forwards` to
+     disappear. The `animation: none !important` reset below would cancel that
+     and leave a full-page gradient over the printout, so hide it outright. */
+  .animate-page-wipe {
+    display: none !important;
+  }
+
+  /* Kill every decorative fixed/absolute layer (mesh, spotlight, cursor,
+     scroll progress) without having to tag each one. */
+  .print-hide {
+    display: none !important;
+  }
+
+  .resume {
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .resume section,
+  .resume li {
+    break-inside: avoid;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
