@@ -122,7 +122,7 @@ export default function Contact() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <Card className="ring-gradient gap-0 p-7 md:p-8">
+          <Card className="gap-0 p-7 md:p-8">
             <form onSubmit={submit} noValidate className="space-y-5">
               <div>
                 <label htmlFor="name" className="text-sm font-medium">

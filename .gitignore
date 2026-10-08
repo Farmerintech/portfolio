@@ -5,6 +5,9 @@
 /.next/
 /out/
 
+# TypeScript incremental build cache (written to the root by `next build`)
+*.tsbuildinfo
+
 # production
 /build
 

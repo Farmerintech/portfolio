@@ -35,7 +35,7 @@ export default function ThemeToggle() {
       size="icon"
       onClick={toggle}
       aria-label="Toggle light and dark theme"
-      className="relative rounded-full border border-border"
+      className="relative rounded-sm border border-border"
     >
       <Sun
         aria-hidden="true"

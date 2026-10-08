@@ -40,7 +40,8 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32"
+      data-tone="green"
+      className="tone-surface section-ground relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32"
     >
       <div className="relative mx-auto grid max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1.05fr_0.95fr]">
         {/* ---------------------------------------------------------------- */}
@@ -73,13 +74,17 @@ export default function Hero() {
                 as="span"
                 text={HEADLINE_1}
                 className="block"
+                split="word"
                 delay={0.15}
                 once
               />
+              {/* Pink is the one palette colour that stays legible on the green
+                  ground (6.7:1), so it carries the accent the gradient used to. */}
               <TextReveal
                 as="span"
                 text={HEADLINE_2}
-                className="text-brand-gradient block"
+                className="text-pink block"
+                split="word"
                 delay={0.4}
                 once
               />
@@ -124,7 +129,7 @@ export default function Hero() {
                   asChild
                   variant="ghost"
                   size="icon"
-                  className="rounded-full text-muted-foreground hover:text-foreground"
+                  className="rounded-sm text-muted-foreground hover:text-foreground"
                 >
                   <a
                     href={href}
@@ -147,14 +152,14 @@ export default function Hero() {
           transition={{ delay: 0.45, duration: 0.9, ease: EASE_OUT_EXPO }}
           className="relative mx-auto w-full max-w-md lg:max-w-none"
         >
-          {/* Soft gradient orb behind the card */}
+          {/* Soft bloom behind the card, in the palette's pink */}
           <div
             aria-hidden="true"
-            className="bg-brand-gradient absolute inset-0 -z-10 scale-90 rounded-full opacity-15 blur-3xl"
+            className="bg-pink absolute inset-0 -z-10 scale-90 rounded-full opacity-20 blur-3xl"
           />
 
           <TiltCard max={11} className="group">
-            <div className="ring-gradient glass relative rotate-[-2deg] rounded-2xl p-1 shadow-lift">
+            <div className="glass relative rotate-[-2deg] rounded-2xl border border-border p-1 shadow-lift">
               <div className="overflow-hidden rounded-[calc(var(--radius)+4px)] bg-card/80">
                 <div className="flex items-center gap-2 border-b border-border px-4 py-3">
                   <i className="size-2.5 rounded-full bg-[#ff5f57]" />
@@ -170,37 +175,37 @@ export default function Hero() {
                     {" = {"}
                     {"\n"}
                     {"  "}role:{" "}
-                    <span className="text-brand-gradient">
+                    <span className="text-pink">
                       &quot;Software Developer&quot;
                     </span>
                     ,{"\n"}
-                    {"  "}stack: [<span className="text-primary">
+                    {"  "}stack: [<span className="text-pink">
                       &quot;React&quot;
                     </span>
-                    , <span className="text-primary">&quot;Next.js&quot;</span>,
+                    , <span className="text-pink">&quot;Next.js&quot;</span>,
                     {"\n"}
                     {"    "}
-                    <span className="text-primary">
+                    <span className="text-pink">
                       &quot;React Native&quot;
                     </span>
                     ,{" "}
-                    <span className="text-primary">
+                    <span className="text-pink">
                       &quot;TypeScript&quot;
                     </span>
                     ,{"\n"}
                     {"    "}
-                    <span className="text-primary">&quot;Node.js&quot;</span>
+                    <span className="text-pink">&quot;Node.js&quot;</span>
                     ],{"\n"}
                     {"  "}based:{" "}
-                    <span className="text-primary">&quot;Nigeria&quot;</span>,
+                    <span className="text-pink">&quot;Nigeria&quot;</span>,
                     {"\n"}
                     {"  "}openTo: [{" "}
-                    <span className="text-primary">
+                    <span className="text-pink">
                       &quot;remote roles&quot;
                     </span>
                     ,{"\n"}
                     {"    "}
-                    <span className="text-primary">
+                    <span className="text-pink">
                       &quot;contracts&quot;
                     </span>
                     ],{"\n"}

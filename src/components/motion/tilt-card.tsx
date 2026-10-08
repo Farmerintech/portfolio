@@ -43,7 +43,7 @@ export default function TiltCard({
   const glareBg = useTransform(
     [glareX, glareY],
     ([gx, gy]: number[]) =>
-      `radial-gradient(420px circle at ${gx}% ${gy}%, color-mix(in oklch, var(--brand-1) 24%, transparent), transparent 62%)`
+      `radial-gradient(420px circle at ${gx}% ${gy}%, color-mix(in oklch, var(--section-fg) 24%, transparent), transparent 62%)`
   );
 
   useEffect(() => {

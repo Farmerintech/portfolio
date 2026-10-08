@@ -5,8 +5,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github, Smartphone, SquareArrowOutUpRight } from "lucide-react";
 
+import ProjectCarousel from "./project-carousel";
 import ProjectCover from "./project-cover";
-import Reveal, { RevealGroup, RevealItem } from "./motion/reveal";
+import Reveal from "./motion/reveal";
 import Section from "./section";
 import TiltCard from "./motion/tilt-card";
 import { Badge } from "./ui/badge";
@@ -22,7 +23,6 @@ import {
 import { SmartText } from "./placeholder";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { filters, projects, type Project } from "@/lib/data";
-import { cn } from "@/lib/utils";
 
 type ProjectLink = { href: string; label: string; Icon: typeof Github };
 
@@ -74,77 +74,109 @@ function linksFor(p: Project): ProjectLink[] {
   return out;
 }
 
+/**
+ * The three grounds a project card may wear.
+ *
+ * Vanilla is deliberately absent: it is the Projects section's own ground, and a
+ * card painted in it would dissolve into the page instead of reading as an
+ * object on it. Deep forest green leads, then the palette's remaining two.
+ */
+const CARD_TONES = ["green", "cream", "pink"] as const;
+
+/**
+ * A project's card colour, fixed by its position in the full `projects` list
+ * rather than its position in the filtered row — so applying a filter never
+ * recolours a card, it only removes some.
+ *
+ * Indexed rather than hashed on purpose: cycling guarantees the three colours
+ * actually alternate. A hash clumps, and the one outcome that would look like a
+ * mistake is two cards side by side in the same ground.
+ */
+function cardTone(name: string) {
+  const i = projects.findIndex((p) => p.name === name);
+  return CARD_TONES[(i < 0 ? 0 : i) % CARD_TONES.length];
+}
+
 function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   return (
-    <TiltCard max={7} className="group h-full">
-      <Card className="ring-gradient h-full gap-0 overflow-hidden pt-0 transition-shadow duration-300 hover:shadow-lift">
-        {/* Real screenshot when one exists, otherwise generated cover art */}
-        <div
-          className="relative overflow-hidden border-b border-border"
-          style={{ aspectRatio: coverAspect(p) }}
-        >
-          <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.08]">
-            <Cover
-              project={p}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
+    /* The tone sits on the wrapper rather than on the Card itself, because
+       TiltCard's glare layer is a *sibling* of the Card: it has to inherit the
+       card's own ink to be visible at all, and a glare drawn in the section's
+       ink would be invisible over a green card. */
+    <div data-tone={cardTone(p.name)} className="tone-surface h-full">
+      <TiltCard max={7} className="group h-full">
+        {/* `section-ground` paints the tone the wrapper declared and beats the
+            Card's own `bg-card` — it is unlayered, and an unlayered rule wins
+            over anything in Tailwind's `@layer utilities` (see README). */}
+        <Card className="section-ground h-full gap-0 overflow-hidden pt-0 transition-shadow duration-300 hover:shadow-lift">
+          {/* Real screenshot when one exists, otherwise generated cover art */}
+          <div
+            className="relative overflow-hidden border-b border-border"
+            style={{ aspectRatio: coverAspect(p) }}
+          >
+            <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.08]">
+              <Cover
+                project={p}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+            <span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent" />
+            <span className="absolute bottom-3 left-4 font-mono text-xs font-medium text-white/90">
+              {p.kind}
+            </span>
           </div>
-          <span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent" />
-          <span className="absolute bottom-3 left-4 font-mono text-xs font-medium text-white/90">
-            {p.kind}
-          </span>
-        </div>
 
-        <div className="flex flex-1 flex-col p-6">
-          <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+          <div className="flex flex-1 flex-col p-6">
+            <h3 className="font-display text-xl font-semibold">{p.name}</h3>
 
-          <SmartText
-            text={p.desc}
-            className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-muted-foreground"
-          />
+            <SmartText
+              text={p.desc}
+              className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-muted-foreground"
+            />
 
-          {p.tech.length > 0 && (
-            <ul className="mt-4 flex flex-wrap gap-1.5">
-              {p.tech.map((t) => (
-                <li key={t}>
-                  <Badge variant="subtle" className="font-mono">
-                    {t}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
-          )}
+            {p.tech.length > 0 && (
+              <ul className="mt-4 flex flex-wrap gap-1.5">
+                {p.tech.map((t) => (
+                  <li key={t}>
+                    <Badge variant="subtle" className="font-mono">
+                      {t}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
 
-          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onOpen}
-              className="-ml-2 text-primary hover:bg-accent"
-            >
-              Details
-              <ArrowUpRight className="size-3.5" />
-            </Button>
+            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onOpen}
+                className="-ml-2 text-primary hover:bg-accent"
+              >
+                Details
+                <ArrowUpRight className="size-3.5" />
+              </Button>
 
-            <div className="ml-auto flex items-center gap-3">
-              {linksFor(p).map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${p.name} on ${label}`}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <Icon className="size-4" />
-                  {label}
-                </a>
-              ))}
+              <div className="ml-auto flex items-center gap-3">
+                {linksFor(p).map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${p.name} on ${label}`}
+                    className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <Icon className="size-4" />
+                    {label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </Card>
-    </TiltCard>
+        </Card>
+      </TiltCard>
+    </div>
   );
 }
 
@@ -165,13 +197,28 @@ export default function Projects() {
     >
       <Tabs value={filter} onValueChange={setFilter}>
         <Reveal blur={false}>
-          <TabsList aria-label="Filter projects" className="mb-10 flex-wrap">
+          {/* The seven chips are wider than a phone screen, so they wrap — and a
+              stadium wrapped around three rows of chips is what read as
+              misaligned: the curved ends bite into the rows at the left and right
+              edges, and the short last row sat hard against the left inside a
+              full-width box. Below `sm` the list is therefore a full-width
+              rounded-lg box with its rows centred; from `sm` up, where the chips
+              fit on one line, it settles back to a single row.
+
+              Its radius stays one step larger than the chips inside it (20px
+              against their 12px, 16px on the single row) — a container sharing
+              its child's radius is what makes an inset row look like it is
+              spilling out of its own border. */}
+          <TabsList
+            aria-label="Filter projects"
+            className="mb-10 w-full justify-center gap-1.5 rounded-lg p-1.5 sm:w-fit sm:justify-start sm:gap-1 sm:rounded-md sm:p-1"
+          >
             {filters.map(([key, label]) => (
               <TabsTrigger key={key} value={key} className="relative">
                 {filter === key && (
                   <motion.span
                     layoutId="filter-pill"
-                    className="bg-brand-gradient absolute inset-0 -z-10 rounded-full"
+                    className="bg-primary absolute inset-0 -z-10 rounded-sm"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -181,7 +228,7 @@ export default function Projects() {
           </TabsList>
         </Reveal>
 
-        {filters.map(([key]) => {
+        {filters.map(([key, label]) => {
           const list = shown(key);
           return (
             <TabsContent key={key} value={key}>
@@ -190,19 +237,22 @@ export default function Projects() {
                   Nothing here yet.
                 </p>
               ) : (
-                <RevealGroup
-                  className={cn(
-                    "grid gap-5",
-                    "sm:grid-cols-2 lg:grid-cols-3"
-                  )}
-                  stagger={0.06}
-                >
-                  {list.map((p) => (
-                    <RevealItem key={p.name} as="article">
-                      <ProjectCard p={p} onOpen={() => setSelected(p)} />
-                    </RevealItem>
-                  ))}
-                </RevealGroup>
+                /* One Reveal for the whole row, not one per card: with a
+                   horizontal track, cards waiting off to the right would sit at
+                   opacity 0 until they were scrolled into view — so stepping
+                   through the row would fade each one in after the fact. The row
+                   arrives as a unit instead. `blur={false}` because a filter
+                   animating over three cover images re-rasterises them every
+                   frame. */
+                <Reveal blur={false}>
+                  <ProjectCarousel label={`${label} projects`}>
+                    {list.map((p) => (
+                      <div key={p.name} className="project-slide">
+                        <ProjectCard p={p} onOpen={() => setSelected(p)} />
+                      </div>
+                    ))}
+                  </ProjectCarousel>
+                </Reveal>
               )}
             </TabsContent>
           );

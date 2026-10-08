@@ -56,11 +56,18 @@ export default function Nav() {
 
   return (
     <header
+      /* `data-nav-shell` is the hook SectionTransition looks the header up by, and
+         `tone-surface` is what makes every token inside it derive from the section
+         passing underneath. The header is fixed above all six grounds, so without
+         both of these it would wear one colour over all of them and clash with the
+         light ones. The scrolled style is `.nav-shell`, which mixes the same tone
+         pair into the translucent bar. */
+      data-nav-shell
       className={cn(
-        "no-print fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "tone-surface text-foreground no-print fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-border/70 bg-background/70 py-2 backdrop-blur-xl"
-          : "border-b border-transparent py-4"
+          ? "nav-shell border-b py-3 backdrop-blur-xl"
+          : "border-b border-transparent py-5"
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6">
@@ -69,14 +76,18 @@ export default function Nav() {
           className="font-mono text-sm font-bold tracking-tight"
         >
           farmerintech
-          <span className="text-brand-gradient">.dev</span>
+          <span className="text-primary">.dev</span>
         </Link>
 
-        {/* Desktop: a pill bar with a sliding active indicator */}
-        <nav
-          aria-label="Primary"
-          className="hidden items-center gap-1 rounded-full border border-border/70 bg-card/50 p-1 backdrop-blur lg:flex"
-        >
+        {/* Desktop: bare links. The current section is marked by ink and a rule,
+            not by a pill on a pill — the header bar is already a background, so a
+            second one inside it was two surfaces fighting for the same job.
+
+            Active is full-strength `foreground` against the muted inactive links,
+            which is the whole colour change: `text-primary` would be invisible
+            here, because `--primary` and `--foreground` both resolve to the
+            section's ink. */}
+        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
           {nav.map(([title, href]) => {
             const id = href.split("#")[1];
             const isActive = active === id;
@@ -86,20 +97,22 @@ export default function Nav() {
                 href={href}
                 aria-current={isActive ? "true" : undefined}
                 className={cn(
-                  "relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
+                  "relative py-1.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-primary-foreground"
+                    ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
+                {title}
                 {isActive && (
+                  /* `layoutId` slides the rule between items as the section under
+                     the header changes, instead of cutting from one to the next. */
                   <motion.span
-                    layoutId="nav-active-pill"
-                    className="bg-brand-gradient absolute inset-0 -z-10 rounded-full"
+                    layoutId="nav-active-rule"
+                    className="bg-foreground absolute inset-x-0 bottom-0 h-0.5 rounded-full"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                {title}
               </Link>
             );
           })}
@@ -110,12 +123,17 @@ export default function Nav() {
             asChild
             variant="outline"
             size="sm"
-            className="hidden sm:inline-flex"
+            className="hidden px-5 sm:inline-flex"
           >
             <Link href="/resume">Resume</Link>
           </Button>
           <ThemeToggle />
-          <Button asChild variant="brand" size="sm" className="hidden md:inline-flex">
+          <Button
+            asChild
+            variant="brand"
+            size="sm"
+            className="hidden px-5 md:inline-flex"
+          >
             <Link href="/#contact">
               <Sparkles className="size-3.5" />
               Hire Me
@@ -128,7 +146,7 @@ export default function Nav() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full border border-border lg:hidden"
+                className="rounded-sm border border-border lg:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="size-5" />
@@ -137,7 +155,7 @@ export default function Nav() {
             <SheetContent side="right" className="w-[86%] sm:max-w-sm">
               <SheetHeader>
                 <SheetTitle className="font-mono">
-                  yakub<span className="text-brand-gradient">.dev</span>
+                  yakub<span className="text-primary">.dev</span>
                 </SheetTitle>
               </SheetHeader>
               <nav aria-label="Mobile" className="flex flex-col gap-1 px-4">

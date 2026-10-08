@@ -4,9 +4,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import favicon from "@/favicon.jpg";
 import Footer from "@/components/footer";
 import Grain from "@/components/motion/grain";
-import GradientMesh from "@/components/motion/gradient-mesh";
 import ScrollProgress from "@/components/motion/scroll-progress";
-import Spotlight from "@/components/motion/spotlight";
 import Nav from "@/components/nav";
 import Providers from "@/components/providers";
 import { site } from "@/lib/data";
@@ -59,9 +57,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  /* Tracks the ground the page opens on, so the browser chrome doesn't sit in a
+     colour the site no longer uses. */
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fcfaff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0714" },
+    { media: "(prefers-color-scheme: light)", color: "#043a2c" },
+    { media: "(prefers-color-scheme: dark)", color: "#032b21" },
   ],
 };
 
@@ -120,9 +120,13 @@ export default function RootLayout({
         </a>
 
         {/* Ambient/decoration layers. All are aria-hidden, inert to pointers,
-            sit behind content, and are stripped in print. */}
-        <GradientMesh />
-        <Spotlight />
+            sit behind content, and are stripped in print.
+
+            The gradient mesh and cursor spotlight have been removed: they were
+            both built from the retired `--glow-*` ramp, and since every section
+            now paints its own opaque ground they could only ever have shown
+            through the hero. ScrollProgress and Grain stay — both are drawn in
+            the current section's own ink, so they read on any ground. */}
         <ScrollProgress />
         <Grain />
 

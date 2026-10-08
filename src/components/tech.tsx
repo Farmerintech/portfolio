@@ -72,9 +72,9 @@ export default function Tech() {
           return (
             <RevealItem key={group.group}>
               <TiltCard max={7} className="group h-full">
-                <Card className="ring-gradient h-full gap-0 overflow-hidden p-6 transition-shadow duration-300 hover:shadow-lift">
+                <Card className="h-full gap-0 overflow-hidden p-6 transition-shadow duration-300 hover:shadow-lift">
                   <div className="flex items-center gap-3">
-                    <span className="bg-brand-gradient flex size-9 items-center justify-center rounded-xl text-white shadow-soft">
+                    <span className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-xl shadow-soft">
                       <Icon className="size-4.5" aria-hidden="true" />
                     </span>
                     <h3 className="font-display text-lg font-semibold">

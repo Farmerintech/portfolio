@@ -5,11 +5,15 @@
 // `cover` falls back to the generated SVG in components/project-cover.tsx.
 import type { StaticImageData } from "next/image";
 
+import type { ToneName } from "./section-palette";
 import adkharCover from "@/assets/adkhar.png";
 import agrocastCover from "@/assets/agrocast.png";
 import agropriceCover from "@/assets/agroprice.png";
+import citadelScreenshot from "@/assets/citadel.png";
+import dutycalcScreenshot from "@/assets/dutycalc.png";
 import pwkyCover from "@/assets/pwky.png";
 import quebecCover from "@/assets/quebec.png";
+import rafiHQScreenshot from "@/assets/rafiqHQ.png";
 import sihaCover from "@/assets/siha.png";
 import srilCover from "@/assets/srill.png";
 
@@ -36,16 +40,32 @@ export type Experience = {
   company: string; role: string; dates: string; url: string | null;
   /** Optional store link (Play Store / App Store), rendered beside `url`. */
   app?: string;
+  /** Static screenshot import displayed in the experience card. */
+  screenshot: StaticImageData;
+  /**
+   * Ground this card wears. The Experience section is pink, so each card takes a
+   * colour of its own rather than a lift of the pink behind it — the entry
+   * carries `data-tone` and the card, its dot and its stretch of rail all derive
+   * from that one value.
+   *
+   * Pink is deliberately absent for the same reason vanilla is absent from
+   * CARD_TONES in components/projects.tsx: it is this section's own ground, and a
+   * card painted in it would dissolve into the page instead of reading as an
+   * object on it. Deep forest green leads, then the palette's remaining two.
+   * Pick tones far apart in *lightness* — two dark grounds read as the same card
+   * at a glance.
+   */
+  tone: ToneName;
   summary: string; points: string[]; tech: string[];
 };
 export const experience: Experience[] = [
-  { company: "DutyCalc", role: "CTO / Software Developer", dates: "April 2026 – Present", url: "https://dutycalc.ng", app: "https://play.google.com/store/apps/details?id=ng.dutycalc.app",
+  { company: "DutyCalc", role: "CTO / Software Developer", dates: "April 2026 – Present", url: "https://dutycalc.ng", app: "https://play.google.com/store/apps/details?id=ng.dutycalc.app", screenshot: dutycalcScreenshot, tone: "green",
     summary: "An all-in-one platform for Nigerian customs duty calculations, manifest verification and professional clearing documentation.",
     points: ["Lead frontend and mobile development with React Native / Expo and TypeScript.", "Coordinate technical implementation across the development team and translate requirements into working product.", "Built the product clearing agents and importers use to price jobs accurately: customs duty calculation, manifest verification and clearance documentation in one place."], tech: ["React Native", "Expo", "TypeScript"] },
-  { company: "Citadel-i", role: "Software Developer (Contract)", dates: "March 2025 – August 2025", url: "https://citadel-i.com.ng/",
+  { company: "Citadel-i", role: "Software Developer (Contract)", dates: "March 2025 – August 2025", url: "https://citadel-i.com.ng/", screenshot: citadelScreenshot, tone: "cream",
     summary: "An e-learning platform for students.",
     points: ["Designed and developed citadel-i.com.ng with course access, learning materials and progress tracking.", "Built responsive student dashboards and an admin dashboard for managing users, courses and content.", "Developed and maintained a centralized REST API serving multiple frontends.", "Contributed to system architecture, scalability, clean code structure and performance optimization."], tech: ["REST API"] },
-  { company: "RafiHQ", role: "Web and Mobile App Developer", dates: "August 2026 – Present · Remote", url: "https://www.rafiqhq.com/",
+  { company: "RafiHQ", role: "Web and Mobile App Developer", dates: "August 2026 – Present · Remote", url: "https://www.rafiqhq.com/", screenshot: rafiHQScreenshot, tone: "vanilla",
     summary: "A cooperative platform that gives societies dedicated member accounts, non-interest financing, bulk group buying power and direct access to institutional bank capital — with every transaction recorded and every officer action logged.",
     points: ["Lead web and mobile development across the platform.", "Built the mobile app, taking it from requirements through to release.", "Optimised the web app for performance and everyday use by cooperative officers and members."], tech: ["React Native", "Expo", "TypeScript"] },
 ];

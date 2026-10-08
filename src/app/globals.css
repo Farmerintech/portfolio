@@ -10,99 +10,173 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ============================================================================
-   DESIGN TOKENS — "bold gradient / playful"
-   Brand gradient runs violet -> pink. It used to carry a third amber stop;
-   that was dropped from every gradient ramp because three hues spread over
-   every surface (page wipe, buttons, borders, bullets, code strings) read as
-   noise rather than intent. `--brand-3` survives as a warm accent for the
-   ambient mesh only. Add the stop back in the three ramps below to restore it.
-   Dark mode is designed, not inverted: brand hues are lightened so they don't
-   vibrate on a dark ground. Body-text contrast ratios are noted where they matter.
+   DESIGN TOKENS — flat five-colour palette
+
+   A section owns its own ground. `--section-bg` / `--section-fg` are the pair
+   that swaps from section to section (and is tweened on scroll by
+   components/motion/section-transition.tsx); every surface token is *derived*
+   from that pair, so a card sitting on a green ground is a lifted green rather
+   than a white slab, and the same card on cream is a tinted cream.
+
+   The five literals in `:root` below are the only colour values on the site.
+
+   Contrast, measured by hand:
+     cream on green  14.0:1    green on pink     6.7:1
+     green on cream  14.0:1    green on vanilla  9.2:1
+   All clear AA for body text.
    ========================================================================= */
+
+/* Registered so the values are typed colours: that is what lets them be
+   interpolated rather than snapping, and it gives them a declared initial value
+   for the first paint before any script has run. */
+@property --section-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #043a2c;
+}
+@property --section-fg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #faf2e0;
+}
+
 :root {
   --radius: 1.25rem;
 
-  --background: #fcfaff;
-  --foreground: #1a1523; /* 16.9:1 on --background */
+  /* --- the palette ------------------------------------------------------- */
+  --green: #043a2c; /* deep forest — opens and closes the page */
+  --cream: #faf2e0; /* warm paper — ink on green, and a light ground */
+  --pink: #f4a6b8; /* "strawberry" — the Experience ground */
+  --vanilla: #f0d9a0; /* the Projects ground */
 
-  --card: #ffffff;
-  --card-foreground: #1a1523;
-  --popover: #ffffff;
-  --popover-foreground: #1a1523;
+  /* Calls to action — the Hire Me / View My Work buttons, the form submit and
+     the scroll-progress bar. A warm terracotta rather than a signal red: it reads
+     as part of the forest-green and cream palette instead of shouting over it.
+     Still dark enough for white at 5.9:1, clear of AA at the 13px button label. */
+  --cta: #a8442a;
+  --cta-foreground: #ffffff;
 
-  --muted: #f4effb;
-  --muted-foreground: #5b5470; /* 7.4:1 on --card */
+  /* --- the tone pair every surface derives from -------------------------- */
+  --section-bg: var(--green);
+  --section-fg: var(--cream);
 
-  --primary: #7c3aed;
-  --primary-foreground: #ffffff; /* 5.2:1 on --primary */
+  /* The page shell. Sections paint over it, so this only ever shows on
+     overscroll and behind body-level portals — hence it tracks the ground the
+     page opens and closes on. */
+  --background: var(--green);
+  --foreground: var(--cream);
 
-  --secondary: #db2777;
-  --secondary-foreground: #ffffff;
-
-  /* shadcn's `accent` is a subtle hover surface — NOT the brand colour.
-     The brand lives on `--primary` / `--brand-*`. */
-  --accent: #f4effb;
-  --accent-foreground: #2e1065;
-
-  --destructive: #dc2626;
+  --destructive: #b3261e;
   --destructive-foreground: #ffffff;
-
-  --border: #e9e1f5;
-  --input: #e9e1f5;
-  --ring: #7c3aed;
-
-  --brand-1: #7c3aed;
-  --brand-2: #db2777;
-  --brand-3: #f59e0b;
-
-  --glow-1: color-mix(in oklch, var(--brand-1) 22%, transparent);
-  --glow-2: color-mix(in oklch, var(--brand-2) 17%, transparent);
-  --glow-3: color-mix(in oklch, var(--brand-3) 13%, transparent);
 
   /* Raw elevation values live under --elev-* so the @theme block below can map
      them into Tailwind's --shadow-* namespace. Naming them --shadow-* here and
      mapping them to themselves would be self-referential and resolve to
      nothing. */
-  --elev-soft: 0 1px 2px rgb(26 21 35 / 0.05), 0 10px 30px -14px rgb(26 21 35 / 0.18);
-  --elev-lift: 0 2px 4px rgb(26 21 35 / 0.06), 0 24px 60px -22px rgb(26 21 35 / 0.28);
-  --elev-glow: 0 18px 48px -18px color-mix(in oklch, var(--brand-1) 55%, transparent);
+  --elev-soft: 0 1px 2px rgb(0 0 0 / 0.06), 0 10px 30px -14px rgb(0 0 0 / 0.22);
+  --elev-lift: 0 2px 4px rgb(0 0 0 / 0.07), 0 24px 60px -22px rgb(0 0 0 / 0.32);
+  --elev-glow: 0 18px 48px -18px color-mix(in oklch, var(--section-fg) 28%, transparent);
 }
 
+/* ----------------------------------------------------------------------------
+   SURFACE DERIVATION
+
+   Declared on `:root` as well as on every toned element, because a custom
+   property substitutes its `var()` references at computed-value time *on the
+   element that declares it* — an inherited `--card` would keep resolving against
+   `:root`'s tone. Redeclaring per toned element is what makes the derivation
+   follow the section. The `:root` copy exists so body-level portals (dialogs,
+   tooltips) land on the opening ground instead of on nothing.
+   -------------------------------------------------------------------------- */
+:root,
+.tone-surface {
+  --card: color-mix(in oklch, var(--section-bg) 88%, var(--section-fg));
+  --card-foreground: var(--section-fg);
+  --popover: var(--card);
+  --popover-foreground: var(--card-foreground);
+
+  --muted: color-mix(in oklch, var(--section-bg) 82%, var(--section-fg));
+  --muted-foreground: color-mix(in oklch, var(--section-fg) 72%, var(--section-bg));
+
+  --border: color-mix(in oklch, var(--section-fg) 14%, transparent);
+  --input: var(--border);
+
+  /* shadcn's `accent` is a subtle hover surface, not the brand colour. */
+  --accent: color-mix(in oklch, var(--section-bg) 76%, var(--section-fg));
+  --accent-foreground: var(--section-fg);
+
+  --secondary: color-mix(in oklch, var(--section-bg) 88%, var(--section-fg));
+  --secondary-foreground: var(--section-fg);
+
+  /* Inverted ink — cream on green, green on cream. Drives the active nav pill,
+     the icon tiles, the eyebrow dots and the timeline rail, all of which have to
+     stay legible whichever ground they land on. */
+  --primary: var(--section-fg);
+  --primary-foreground: var(--section-bg);
+  --ring: var(--section-fg);
+}
+
+/* The page shell pair follows the section as well, so `text-foreground` inside a
+   section is *that section's* ink and `bg-background` its ground. Without this
+   the pair would keep inheriting `:root`'s green/cream, and every
+   `hover:text-foreground` in a light section — the nav links, the tech chips, the
+   footer links — would paint cream on cream on hover.
+
+   Scoped to `.tone-surface` rather than folded into the block above on purpose:
+   `:root`'s own copy must keep resolving to the ground the page opens on, which is
+   what body-level portals (dialogs, tooltips, toasts) land on. */
+.tone-surface {
+  --background: var(--section-bg);
+  --foreground: var(--section-fg);
+}
+
+/* Light grounds, by tone. */
+[data-tone="green"] {
+  --section-bg: var(--green);
+  --section-fg: var(--cream);
+}
+[data-tone="cream"] {
+  --section-bg: var(--cream);
+  --section-fg: var(--green);
+}
+[data-tone="pink"] {
+  --section-bg: var(--pink);
+  --section-fg: var(--green);
+}
+[data-tone="vanilla"] {
+  --section-bg: var(--vanilla);
+  --section-fg: var(--green);
+}
+
+/* Dark theme keeps the same five colours but inks the light grounds, so the
+   theme toggle still does something real now that every section paints its own
+   background rather than inheriting one page-wide value. */
 :root[data-theme="dark"] {
-  --background: #0b0714;
-  --foreground: #f5f1ff; /* 18.2:1 on --background */
-
-  --card: #150e24;
-  --card-foreground: #f5f1ff;
-  --popover: #150e24;
-  --popover-foreground: #f5f1ff;
-
-  --muted: #1e1533;
-  --muted-foreground: #a99fc4; /* 8.1:1 on --background */
-
-  --primary: #a78bfa;
-  --primary-foreground: #1a0b33; /* 8.9:1 on --primary */
-
-  --secondary: #f472b6;
-  --secondary-foreground: #3b0722;
-
-  --accent: #1e1533;
-  --accent-foreground: #ede9fe;
-
+  --section-bg: #032b21;
+  --section-fg: var(--cream);
+  --background: #032b21;
+  --foreground: var(--cream);
   --destructive: #f87171;
   --destructive-foreground: #2a0505;
-
-  --border: #2a1f42;
-  --input: #2a1f42;
-  --ring: #a78bfa;
-
-  --brand-1: #a78bfa;
-  --brand-2: #ec4899;
-  --brand-3: #fbbf24;
-
   --elev-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px -14px rgb(0 0 0 / 0.7);
   --elev-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 24px 60px -22px rgb(0 0 0 / 0.85);
-  --elev-glow: 0 18px 48px -18px color-mix(in oklch, var(--brand-1) 70%, transparent);
+}
+
+:root[data-theme="dark"] [data-tone="green"] {
+  --section-bg: #032b21;
+  --section-fg: var(--cream);
+}
+:root[data-theme="dark"] [data-tone="cream"] {
+  --section-bg: #14211c;
+  --section-fg: var(--cream);
+}
+:root[data-theme="dark"] [data-tone="pink"] {
+  --section-bg: #5c2b38;
+  --section-fg: var(--cream);
+}
+:root[data-theme="dark"] [data-tone="vanilla"] {
+  --section-bg: #4a3d18;
+  --section-fg: var(--cream);
 }
 
 /* ============================================================================
@@ -130,9 +204,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-brand-1: var(--brand-1);
-  --color-brand-2: var(--brand-2);
-  --color-brand-3: var(--brand-3);
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+
+  /* The raw palette is exposed to utilities too, so a section can reach past its
+     own tone pair for an accent — the hero's pink headline line and the code
+     card's string literals are the two places that do. */
+  --color-green: var(--green);
+  --color-cream: var(--cream);
+  --color-pink: var(--pink);
+  --color-vanilla: var(--vanilla);
 
   --radius-sm: calc(var(--radius) - 8px);
   --radius-md: calc(var(--radius) - 4px);
@@ -143,6 +224,12 @@
   --font-sans: var(--font-geist), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-outfit), var(--font-geist), system-ui, sans-serif;
+
+  /* Display step for section headings. Paired with a tight line-height at the
+     call site — the brief asks for large display type with the lines close
+     enough to read as a block rather than a stack. */
+  --text-display: clamp(1.9rem, 4.5vw, 3.25rem);
+  --text-display--line-height: 0.98;
 
   --shadow-soft: var(--elev-soft);
   --shadow-lift: var(--elev-lift);
@@ -220,8 +307,8 @@ h3 {
 }
 
 ::selection {
-  background: color-mix(in oklch, var(--brand-1) 32%, transparent);
-  color: var(--foreground);
+  background: color-mix(in oklch, var(--section-fg) 28%, var(--section-bg));
+  color: var(--section-fg);
 }
 
 /* Baseline focus ring for anything that doesn't bring its own. Layered so the
@@ -257,67 +344,92 @@ html.theme-anim *::after {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklch, var(--brand-1) 45%, var(--border));
+  background: color-mix(in oklch, var(--section-fg) 40%, var(--border));
   border: 3px solid var(--background);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-1);
+  background: var(--section-fg);
 }
 
 /* ============================================================================
-   GRADIENT / SURFACE UTILITIES
+   TONE SURFACES
    ========================================================================= */
 
-/* The signature brand gradient. `in oklch` keeps the violet->pink->amber ramp
-   perceptually even instead of muddy through the midpoint. */
-.bg-brand-gradient {
-  background-image: linear-gradient(
-    115deg in oklch,
-    var(--brand-1) 0%,
-    var(--brand-2) 100%
-  );
+/* A section's own ground. There is deliberately no `transition` on
+   background-color here: GSAP owns the timing of the crossfade and a CSS
+   transition underneath it would fight the tween. */
+.section-ground {
+  background-color: var(--section-bg);
+  color: var(--section-fg);
 }
 
-.text-brand-gradient {
-  background-image: linear-gradient(
-    115deg in oklch,
-    var(--brand-1) 0%,
-    var(--brand-2) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  /* Descenders get clipped by background-clip in some engines without this. */
-  padding-block: 0.08em;
+/* The fixed header rides the same tone pair, so it can never end up painted
+   against a section it clashes with. */
+.nav-shell {
+  background-color: color-mix(in oklch, var(--section-bg) 74%, transparent);
+  border-color: color-mix(in oklch, var(--section-fg) 16%, transparent);
 }
 
-/* Animated conic border for feature cards: a gradient ring that rotates. */
-.ring-gradient {
+/* The seam between two sections is an SVG filled with the incoming section's own
+   background — `currentColor` rather than an SVG `fill` attribute so it picks the
+   tweened value up for free and flows up in lockstep with the ground. */
+.seam-fill {
+  color: var(--section-bg);
+}
+
+/* ----------------------------------------------------------------------------
+   EXPERIENCE — the stacked cards
+
+   Each entry pins below the header and the next one climbs over it, so the three
+   jobs deal out as a deck instead of scrolling past as a column.
+
+   The pinning is plain `position: sticky` and nothing else. The entries are
+   siblings, so each one's containing block is the whole list — which is what
+   makes the stack possible: a card pins at the top and, because there is still
+   list below it, keeps holding there while the next card rises over it. Had each
+   card been confined to a row of its own, it would be pushed off the moment its
+   row ended, which is exactly the "arrives and leaves before you can read it"
+   behaviour this replaced. The overlap needs no z-index — the cards are in flow
+   in DOM order, so later ones paint over earlier ones already.
+
+   `--stack-top` comes from the component, one step per card, so the deck shows a
+   band of everything underneath.
+
+   Held back to `md` and up, and switched off again under reduced motion: on a
+   phone these cards are taller than the viewport, so pinning one would hold its
+   top on screen and hide its bottom — the text would be unreachable. Below `md`,
+   and for anyone who has asked for less motion, the list stays a plain column.
+   -------------------------------------------------------------------------- */
+.stack-item {
   position: relative;
 }
-.ring-gradient::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    140deg in oklch,
-    var(--brand-1),
-    var(--brand-2)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.32;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
+
+@media (min-width: 48rem) {
+  .stack-item {
+    position: sticky;
+    top: var(--stack-top, 7rem);
+    /* How long a card holds, and the only dial that controls it. A card stays
+       put until the next one reaches it, which is one entry-height of scrolling
+       away — so giving every entry a floor of half a screen sets the hold at
+       ~50vh whatever height the copy inside happens to come to. The floor is
+       what matters on a tall display: these cards are text, so on a big monitor
+       they would otherwise be short enough to be covered almost as soon as they
+       arrived. On a shorter one the cards are already past the floor and it
+       does nothing. */
+    min-height: 50vh;
+  }
 }
-.ring-gradient:hover::before {
-  opacity: 1;
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-item {
+    position: relative;
+    top: auto;
+    /* `min-height` and not just the position: it is declared in the query above
+       and would otherwise stand, leaving half a screen of empty ground between
+       cards in what is meant to be a plain list. */
+    min-height: auto;
+  }
 }
 
 .glass {
@@ -326,28 +438,41 @@ html.theme-anim *::after {
   -webkit-backdrop-filter: blur(16px) saturate(150%);
 }
 
-/* ============================================================================
-   AMBIENT LAYERS (mesh + grain) — purely decorative, hidden when printing
-   ========================================================================= */
+/* One slide of the Projects row. The widths are here rather than as `basis-[…]`
+   utilities because each one is the viewport minus the gaps that slide shares,
+   and `calc()` needs whitespace — which an arbitrary utility would have to spell
+   with underscores, hiding the arithmetic. The track's `gap-5` is 1.25rem, so two
+   slides share one gap and three share two. One card per view on a phone, where
+   the row also plays itself; two from sm; three from lg.
+   These divide exactly, which matters: `snap-mandatory` on the track makes the
+   last slide land flush, so the "next" arrow can reach the true end. */
+.project-slide {
+  flex: 0 0 100%;
+}
+@media (min-width: 40rem) {
+  .project-slide {
+    flex-basis: calc((100% - 1.25rem) / 2);
+  }
+}
+@media (min-width: 64rem) {
+  .project-slide {
+    flex-basis: calc((100% - 2.5rem) / 3);
+  }
+}
 
-/* Slow-drifting gradient blobs. Transform-only animation so it stays on the
-   compositor and never triggers layout. */
-@keyframes blob-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  33% {
-    transform: translate3d(4%, -6%, 0) scale(1.12);
-  }
-  66% {
-    transform: translate3d(-5%, 4%, 0) scale(0.94);
-  }
+/* The Projects row scrolls on every device, so its scrollbar would be permanent
+   furniture under the cards. The arrows are the visible affordance instead; touch
+   and trackpad still scroll it natively. */
+.scrollbar-none {
+  scrollbar-width: none;
 }
-.animate-blob {
-  animation: blob-drift var(--blob-duration, 22s) ease-in-out infinite;
-  will-change: transform;
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
+
+/* ============================================================================
+   AMBIENT LAYERS — purely decorative, hidden when printing
+   ========================================================================= */
 
 @keyframes spin-slow {
   to {
@@ -444,7 +569,6 @@ html.theme-anim *::after {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .animate-blob,
   .animate-marquee,
   .animate-float,
   .animate-spin-slow {
@@ -462,8 +586,15 @@ html.theme-anim *::after {
 }
 
 @media print {
+  /* Every ground collapses to paper. The `[data-tone]` selectors are listed
+     explicitly because a tone rule sits on the section element itself and would
+     otherwise beat an inherited value from :root. */
   :root,
-  :root[data-theme="dark"] {
+  :root[data-theme="dark"],
+  [data-tone],
+  :root[data-theme="dark"] [data-tone] {
+    --section-bg: #fff;
+    --section-fg: #111;
     --background: #fff;
     --foreground: #111;
     --card: #fff;
@@ -471,7 +602,7 @@ html.theme-anim *::after {
     --muted: #f5f5f5;
     --muted-foreground: #444;
     --border: #d8d8d8;
-    --primary: #5b21b6;
+    --primary: #043a2c;
     --primary-foreground: #fff;
     --elev-soft: none;
     --elev-lift: none;
@@ -483,15 +614,19 @@ html.theme-anim *::after {
     background: #fff !important;
   }
 
+  .section-ground {
+    background-color: #fff !important;
+    color: #111 !important;
+  }
+
   .no-print,
   .grain::after,
-  .animate-blob,
   .animate-marquee,
   .animate-float,
   .animate-spin-slow,
   /* The page-transition wipe relies on `animation-fill-mode: forwards` to
      disappear. The `animation: none !important` reset below would cancel that
-     and leave a full-page gradient over the printout, so hide it outright. */
+     and leave a full-page colour over the printout, so hide it outright. */
   .animate-page-wipe {
     display: none !important;
   }

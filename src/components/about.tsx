@@ -36,7 +36,7 @@ export default function About() {
               {STATS.map((s) => (
                 <Card key={s.label} className="gap-0 p-5 text-center">
                   <p className="font-display text-3xl font-semibold sm:text-4xl">
-                    <span className="text-brand-gradient">
+                    <span className="text-primary">
                       <Counter to={s.value} suffix={s.suffix} />
                     </span>
                   </p>
@@ -65,10 +65,10 @@ export default function About() {
 
         <Reveal delay={0.14}>
           <Parallax distance={44}>
-            <Card className="ring-gradient relative h-full overflow-hidden gap-0 p-7">
+            <Card className="relative h-full overflow-hidden gap-0 p-7">
               <div
                 aria-hidden="true"
-                className="bg-brand-gradient absolute -right-16 -top-16 size-40 rounded-full opacity-15 blur-2xl"
+                className="bg-primary absolute -right-16 -top-16 size-40 rounded-full opacity-15 blur-2xl"
               />
               <p className="font-mono text-sm uppercase tracking-widest text-primary">
                 Open to
@@ -78,7 +78,7 @@ export default function About() {
                   <li key={item} className="flex gap-3">
                     <span
                       aria-hidden="true"
-                      className="bg-brand-gradient mt-2 size-1.5 shrink-0 rounded-full"
+                      className="bg-primary mt-2 size-1.5 shrink-0 rounded-full"
                     />
                     {item}
                   </li>

@@ -5,14 +5,21 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-[transform,box-shadow,background-color,border-color,color] duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 shrink-0 select-none",
+  /* `rounded-sm` is 12px in this project's scale (--radius is 1.25rem), and that
+     is deliberate rather than a small corner picked at random. The radius has to
+     be under half the button's height or the browser clamps it and the button
+     renders as a pill anyway — and the smallest button here is `sm` at 32px, so
+     anything at 16px (rounded-md) or above would leave the header and filter
+     buttons looking exactly as they did. 12px reads as a rectangle on every size,
+     and it is a token, so it still tracks --radius. */
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-[transform,box-shadow,background-color,border-color,color] duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 shrink-0 select-none",
   {
     variants: {
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-soft hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0",
         brand:
-          "bg-brand-gradient text-white shadow-soft hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0",
+          "bg-cta text-cta-foreground shadow-soft hover:bg-cta/90 hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0",
         secondary:
           "bg-secondary text-secondary-foreground shadow-soft hover:shadow-lift hover:-translate-y-0.5 active:translate-y-0",
         outline:

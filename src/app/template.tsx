@@ -14,9 +14,11 @@
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* The wipe is the green the page opens on, so a navigation reads as the
+          new route arriving out of the same ground the previous one left. */}
       <div
         aria-hidden="true"
-        className="bg-brand-gradient animate-page-wipe print-hide pointer-events-none fixed inset-0 z-[90]"
+        className="bg-green animate-page-wipe print-hide pointer-events-none fixed inset-0 z-[90]"
       />
       <div className="animate-page-in">{children}</div>
     </>

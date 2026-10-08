@@ -50,7 +50,7 @@ export default function Marquee({
         <div className="flex shrink-0 items-center gap-3" aria-hidden="false">
           {children}
         </div>
-        <div className="flex shrink-0 items-center gap-3" aria-hidden="true">
+        <div className="flex shrink-0 items-center gap-3" aria-hidden="true" inert>
           {children}
         </div>
       </div>

@@ -57,7 +57,7 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="absolute top-5 right-5 rounded-full p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none">
+        <SheetPrimitive.Close className="absolute top-5 right-5 rounded-sm p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 outline-none">
           <X className="size-5" />
           <span className="sr-only">Close menu</span>
         </SheetPrimitive.Close>

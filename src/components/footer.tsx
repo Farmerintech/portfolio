@@ -1,22 +1,37 @@
 import Link from "next/link";
 
+import SectionSeam from "./section-seam";
 import { nav, site } from "@/lib/data";
+import { toneBefore, toneFor } from "@/lib/section-palette";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
+  /* The footer is not a <Section> — it has no eyebrow or heading — but it still
+     owns a ground, so it reads its tone out of the same ordered array instead of
+     hard-coding one. SectionTransition finds it by this id and crossfades it in
+     like every other section, which is why the id has to match the entry there. */
+  const tone = toneFor("footer");
+  const previous = toneBefore("footer");
+
   return (
-    <footer className="no-print relative border-t border-border">
+    <footer
+      id="footer"
+      data-tone={tone.tone}
+      className="tone-surface section-ground no-print relative border-t border-border"
+    >
+      {previous && <SectionSeam shape={tone.seam} />}
+
       <div
         aria-hidden="true"
-        className="bg-brand-gradient absolute inset-x-0 top-0 h-px opacity-60"
+        className="bg-primary absolute inset-x-0 top-0 h-px opacity-60"
       />
 
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <p className="font-mono text-sm font-bold">
-              yakub<span className="text-brand-gradient">.dev</span>
+              yakub<span className="text-primary">.dev</span>
             </p>
             <p className="mt-3 text-sm text-muted-foreground">
               Building practical web and mobile products.
