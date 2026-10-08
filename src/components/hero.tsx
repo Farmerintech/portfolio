@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Github, Linkedin, Mail, Send } from "lucide-react";
+import {
+  ArrowRight,
+  Github,
+  Linkedin,
+  Mail,
+  Send,
+} from "lucide-react";
 
-import Magnetic from "./motion/magnetic";
 import ScrambleText from "./motion/scramble-text";
 import TextReveal from "./motion/text-reveal";
 import TiltCard from "./motion/tilt-card";
@@ -16,10 +21,33 @@ import { cn } from "@/lib/utils";
 const HEADLINE_1 = "Software Developer";
 const HEADLINE_2 = "building practical digital products.";
 
+function WhatsAppIcon({ className, ...props }: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.1-4.7a8.5 8.5 0 1 1 16.4-3.8Z" />
+      <path d="M8.8 8.3c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.6c.1.3.1.5-.1.7l-.5.6c-.2.2-.2.4 0 .7.5.8 1.2 1.5 2.1 1.9.3.1.5.1.7-.1l.7-.8c.2-.2.4-.3.7-.2l1.5.7c.3.1.4.3.4.5 0 .3-.2 1.1-.7 1.5-.5.5-1.2.7-2 .6-1-.1-2.3-.7-3.5-1.8-1.3-1.2-2.1-2.6-2.3-3.7-.2-.8.1-1.5.5-2.1Z" />
+    </svg>
+  );
+}
+
 const SOCIALS = [
   { Icon: Github, href: site.github, label: "GitHub" },
   { Icon: Linkedin, href: site.linkedin, label: "LinkedIn" },
   { Icon: Mail, href: `mailto:${site.email}`, label: "Email" },
+  {
+    Icon: WhatsAppIcon,
+    href: `https://wa.me/${site.phone.replace(/\D/g, "")}`,
+    label: "WhatsApp",
+  },
 ] as const;
 
 /** Tech chips that orbit the code card. Positions are hand-placed, not random. */
@@ -103,33 +131,40 @@ export default function Hero() {
 
           <motion.div
             {...up(0.62)}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            className="mt-9 flex flex-col items-start gap-3"
           >
-            <Magnetic>
-              <Button asChild variant="brand" size="lg">
-                <Link href="/#projects">
-                  View My Work
+            <div className="flex flex-nowrap items-center gap-2 sm:gap-3">
+              <Button
+                asChild
+                variant="brand"
+                size="icon"
+                className="hover:translate-y-0 sm:h-12 sm:w-auto sm:px-6"
+              >
+                <Link href="/#projects" aria-label="View My Work">
+                  <span className="sr-only sm:not-sr-only">View My Work</span>
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
-            </Magnetic>
-            <Magnetic strength={0.24}>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/#contact">
+              <Button
+                asChild
+                variant="outline"
+                size="icon"
+                className="sm:h-12 sm:w-auto sm:px-6"
+              >
+                <Link href="/#contact" aria-label="Hire Me">
                   <Send className="size-4" />
-                  Hire Me
+                  <span className="sr-only sm:not-sr-only">Hire Me</span>
                 </Link>
               </Button>
-            </Magnetic>
-
-            <span className="ml-1 flex gap-1">
+            </div>
+            <span className="flex gap-0.5 sm:gap-1">
               {SOCIALS.map(({ Icon, href, label }) => (
                 <Button
                   key={label}
                   asChild
                   variant="ghost"
-                  size="icon"
-                  className="rounded-sm text-muted-foreground hover:text-foreground"
+                  size="icon-sm"
+                  className="text-muted-foreground hover:text-foreground sm:size-10"
                 >
                   <a
                     href={href}
