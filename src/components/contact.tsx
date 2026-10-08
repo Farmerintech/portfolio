@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Github, Linkedin, Mail, Send } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  MessageCircle,
+  Send,
+  type LucideIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import Magnetic from "./motion/magnetic";
@@ -17,11 +24,40 @@ type Errors = Partial<Record<"name" | "email" | "message", string>>;
 const FIELD =
   "mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary focus:ring-[3px] focus:ring-ring/25";
 
-const CONTACTS = [
+/**
+ * wa.me takes the number as bare digits — no `+`, no spaces. Those are all legal
+ * in `site.phone` and all of them break the link, so this is derived from it
+ * rather than typed out a second time, and the two can't drift apart.
+ */
+const WHATSAPP = `https://wa.me/${site.phone.replace(/\D/g, "")}`;
+
+type Contact = {
+  Icon: LucideIcon;
+  /** The link's visible text. */
+  label: string;
+  href: string;
+  /**
+   * Names the service for screen readers, for rows whose visible text doesn't.
+   * The email address is self-describing and LinkedIn and GitHub say what they
+   * are, so only the number needs it — a phone number beside a speech bubble
+   * doesn't announce which app it opens.
+   */
+  spoken?: string;
+};
+
+const CONTACTS: Contact[] = [
   { Icon: Mail, label: site.email, href: `mailto:${site.email}` },
+  {
+    /* Lucide dropped the brand marks, so there is no WhatsApp glyph in the set;
+       a speech bubble is the closest it has to "message me here". */
+    Icon: MessageCircle,
+    label: site.phone,
+    href: WHATSAPP,
+    spoken: "WhatsApp",
+  },
   { Icon: Linkedin, label: "LinkedIn", href: site.linkedin },
   { Icon: Github, label: "GitHub", href: site.github },
-] as const;
+];
 
 /**
  * Declared at module scope, not inside Contact: a component defined during
@@ -103,7 +139,7 @@ export default function Contact() {
           </p>
 
           <ul className="space-y-3">
-            {CONTACTS.map(({ Icon, label, href }) => (
+            {CONTACTS.map(({ Icon, label, href, spoken }) => (
               <li key={label}>
                 <a
                   href={href}
@@ -114,7 +150,10 @@ export default function Contact() {
                   <span className="flex size-9 items-center justify-center rounded-full border border-border bg-card">
                     <Icon className="size-4" aria-hidden="true" />
                   </span>
-                  <span className="break-all">{label}</span>
+                  <span className="break-all">
+                    {spoken && <span className="sr-only">{spoken} </span>}
+                    {label}
+                  </span>
                 </a>
               </li>
             ))}
