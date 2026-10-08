@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 
+import favicon from "@/favicon.jpg";
 import Footer from "@/components/footer";
 import Grain from "@/components/motion/grain";
 import GradientMesh from "@/components/motion/gradient-mesh";
@@ -35,6 +36,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
+  /* The photo lives in src/, which Next does not scan, so it is imported and
+     referenced explicitly here. NOTE: src/app/icon.svg still exists and Next
+     emits file-based icons alongside these — delete it, or the browser may
+     keep showing the old mark instead of the photo. */
+  icons: {
+    icon: [{ url: favicon.src, type: "image/jpeg" }],
+    apple: [{ url: favicon.src }],
+  },
   openGraph: {
     type: "website",
     title,

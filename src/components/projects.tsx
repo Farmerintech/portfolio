@@ -27,6 +27,23 @@ import { cn } from "@/lib/utils";
 type ProjectLink = { href: string; label: string; Icon: typeof Github };
 
 /**
+ * Aspect ratio for a project's cover box.
+ *
+ * Screenshots in src/assets are NOT all the same shape — exports range from 16:9
+ * down to about 3:2. A fixed 16:9 box with `object-cover` crops the taller ones,
+ * cutting content off the top and bottom, so the box is derived from each image's
+ * own intrinsic size instead. The generated SVG art is always drawn at 16:9 and
+ * keeps that ratio.
+ */
+function coverAspect(project: Project): string {
+  const cover = project.cover;
+  if (cover && typeof cover !== "string") {
+    return `${cover.width} / ${cover.height}`;
+  }
+  return "16 / 9";
+}
+
+/**
  * Cover art for a project: a real screenshot when `project.cover` points at one,
  * otherwise the deterministic generated SVG. Keeping the fallback means a project
  * can ship before its screenshot exists and never render a broken image.
@@ -61,8 +78,11 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   return (
     <TiltCard max={7} className="group h-full">
       <Card className="ring-gradient h-full gap-0 overflow-hidden pt-0 transition-shadow duration-300 hover:shadow-lift">
-        {/* Generated cover — no image assets, deterministic per project name */}
-        <div className="relative aspect-[16/9] overflow-hidden border-b border-border">
+        {/* Real screenshot when one exists, otherwise generated cover art */}
+        <div
+          className="relative overflow-hidden border-b border-border"
+          style={{ aspectRatio: coverAspect(p) }}
+        >
           <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.08]">
             <Cover
               project={p}
@@ -194,7 +214,10 @@ export default function Projects() {
           {selected && (
             <>
               <div className="-mx-6 -mt-6 overflow-hidden rounded-t-2xl border-b border-border">
-                <div className="relative aspect-[16/7]">
+                <div
+                  className="relative"
+                  style={{ aspectRatio: coverAspect(selected) }}
+                >
                   <Cover
                     project={selected}
                     sizes="(max-width: 768px) 100vw, 640px"
