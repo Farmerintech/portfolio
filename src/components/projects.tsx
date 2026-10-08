@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github, Smartphone, SquareArrowOutUpRight } from "lucide-react";
@@ -25,6 +26,28 @@ import { cn } from "@/lib/utils";
 
 type ProjectLink = { href: string; label: string; Icon: typeof Github };
 
+/**
+ * Cover art for a project: a real screenshot when `project.cover` points at one,
+ * otherwise the deterministic generated SVG. Keeping the fallback means a project
+ * can ship before its screenshot exists and never render a broken image.
+ *
+ * `fill` requires a positioned parent — every call site supplies one.
+ */
+function Cover({ project, sizes }: { project: Project; sizes: string }) {
+  if (project.cover) {
+    return (
+      <Image
+        src={project.cover}
+        alt=""
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+    );
+  }
+  return <ProjectCover name={project.name} />;
+}
+
 function linksFor(p: Project): ProjectLink[] {
   const out: ProjectLink[] = [];
   if (p.github) out.push({ href: p.github, label: "GitHub", Icon: Github });
@@ -41,7 +64,10 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
         {/* Generated cover — no image assets, deterministic per project name */}
         <div className="relative aspect-[16/9] overflow-hidden border-b border-border">
           <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.08]">
-            <ProjectCover name={p.name} />
+            <Cover
+              project={p}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
           </div>
           <span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent" />
           <span className="absolute bottom-3 left-4 font-mono text-xs font-medium text-white/90">
@@ -168,8 +194,11 @@ export default function Projects() {
           {selected && (
             <>
               <div className="-mx-6 -mt-6 overflow-hidden rounded-t-2xl border-b border-border">
-                <div className="aspect-[16/7]">
-                  <ProjectCover name={selected.name} />
+                <div className="relative aspect-[16/7]">
+                  <Cover
+                    project={selected}
+                    sizes="(max-width: 768px) 100vw, 640px"
+                  />
                 </div>
               </div>
 
