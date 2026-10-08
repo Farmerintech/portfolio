@@ -197,24 +197,12 @@ export default function Projects() {
     >
       <Tabs value={filter} onValueChange={setFilter}>
         <Reveal blur={false}>
-          {/* The seven chips are wider than a phone screen, so they wrap — and a
-              stadium wrapped around three rows of chips is what read as
-              misaligned: the curved ends bite into the rows at the left and right
-              edges, and the short last row sat hard against the left inside a
-              full-width box. Below `sm` the list is therefore a full-width
-              rounded-lg box with its rows centred; from `sm` up, where the chips
-              fit on one line, it settles back to a single row.
-
-              Its radius stays one step larger than the chips inside it (20px
-              against their 12px, 16px on the single row) — a container sharing
-              its child's radius is what makes an inset row look like it is
-              spilling out of its own border. */}
           <TabsList
             aria-label="Filter projects"
-            className="mb-10 w-full justify-center gap-1.5 rounded-lg p-1.5 sm:w-fit sm:justify-start sm:gap-1 sm:rounded-md sm:p-1"
+            className="scrollbar-none mb-10 w-full flex-nowrap justify-start overflow-x-auto overscroll-x-contain rounded-lg p-1.5 sm:w-fit sm:gap-1 sm:overflow-visible sm:rounded-md sm:p-1"
           >
             {filters.map(([key, label]) => (
-              <TabsTrigger key={key} value={key} className="relative">
+              <TabsTrigger key={key} value={key} className="relative shrink-0">
                 {filter === key && (
                   <motion.span
                     layoutId="filter-pill"
