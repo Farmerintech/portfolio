@@ -133,27 +133,27 @@ export default function Hero() {
             {...up(0.62)}
             className="mt-9 flex flex-col items-start gap-3"
           >
-            <div className="flex flex-nowrap items-center gap-2 sm:gap-3">
+            <div className="flex w-full flex-nowrap items-center gap-3 sm:w-auto">
               <Button
                 asChild
                 variant="brand"
-                size="icon"
-                className="hover:translate-y-0 sm:h-12 sm:w-auto sm:px-6"
+                size="lg"
+                className="h-12 px-4 hover:translate-y-0 sm:px-6"
               >
-                <Link href="/#projects" aria-label="View My Work">
-                  <span className="sr-only sm:not-sr-only">View My Work</span>
+                <Link href="/#projects">
+                  <span>View My Work</span>
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
-                size="icon"
-                className="sm:h-12 sm:w-auto sm:px-6"
+                size="lg"
+                className="h-12 px-4"
               >
-                <Link href="/#contact" aria-label="Hire Me">
+                <Link href="/#contact">
                   <Send className="size-4" />
-                  <span className="sr-only sm:not-sr-only">Hire Me</span>
+                  <span>Hire Me</span>
                 </Link>
               </Button>
             </div>
