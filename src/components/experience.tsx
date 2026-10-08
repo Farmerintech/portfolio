@@ -13,19 +13,22 @@ import { experience, type Experience as Job } from "@/lib/data";
 /**
  * Where each card pins, measured from the top of the viewport.
  *
- * The first clears the fixed header — 64px tall once the page is scrolled, which
- * it always is by the time this section is on screen — with room to spare. Every
- * card after it steps down by `STACK_STEP`, so a settled deck shows a band of
- * each card underneath the one on top. That band is the whole point of the
- * pattern: without it, a card sliding over another reads as a glitch rather than
- * as a deck.
+ * The first of each pair clears the fixed header — 65px tall once the page is
+ * scrolled, which it always is by the time this section is on screen — and the
+ * cards after it step down, so a settled deck shows a band of each card
+ * underneath the one on top. That band is the whole point of the pattern:
+ * without it, a card sliding over another reads as a glitch rather than as a
+ * deck.
  *
- * The step is wider than it looks like it needs to be because the cards are
- * `rounded-2xl` — a 34px corner — so a band narrower than that shows nothing but
- * the curve.
+ * Two sets of numbers rather than one, because the header is the same height at
+ * every width but the room under it is not. On a phone the step spends vertical
+ * space a card needs most of, so both values come down — the pin sits closer
+ * under the header and the bands are thinner. Neither goes to nothing: a band
+ * has to stay wide enough to read as an edge rather than as a hairline, and the
+ * cards' `rounded-2xl` corners mean the very ends of it taper away.
  */
-const STACK_TOP = 112;
-const STACK_STEP = 28;
+const STACK_TOP = { phone: 80, desktop: 112 };
+const STACK_STEP = { phone: 18, desktop: 28 };
 
 /**
  * Text-only card. It wears whatever ground its entry scopes with `data-tone` —
@@ -135,12 +138,16 @@ function ExperienceCard({ job }: { job: Job }) {
  * height of scrolling — about a screenful, near enough to the ~50vh-per-card
  * this was tuned to.
  *
- * `STACK_TOP + i * STACK_STEP` is what turns that pile into a *deck*: every card
+ * `STACK_TOP` / `STACK_STEP` are what turn that pile into a *deck*: every card
  * stops a little lower than the one before, so the top edge of everything
  * underneath stays visible.
  *
- * Reads as a plain column on phones and under reduced motion — see the media
- * queries in globals.css for why.
+ * The one condition on all of this is that a card has to fit the screen. A
+ * pinned card holds its top edge, so a card taller than the viewport would keep
+ * its own bottom out of reach for as long as it was held — which is why the
+ * offsets shrink on a phone, where the cards are at their tallest relative to
+ * the screen. Under reduced motion the deck is off entirely and the list is a
+ * plain column; see the media queries in globals.css.
  */
 export default function Experience() {
   return (
@@ -152,31 +159,36 @@ export default function Experience() {
       {/* The tone scope is the `<li>`, so `--section-bg` inside a card is *that
           card's* colour and the card re-derives its whole ink set from it. */}
       <ol>
-        {experience.map((job, i) => (
-          <li
-            key={job.company}
-            data-tone={job.tone}
-            className="stack-item"
-            /* A custom property rather than `top` directly: `top` on a
-               non-sticky box would still offset it, and below `md` — and again
-               under reduced motion — these cards are not sticky. The property is
-               inert until the media query reads it. */
-            style={
-              {
-                "--stack-top": `${STACK_TOP + i * STACK_STEP}px`,
-              } as CSSProperties
-            }
-          >
-            {/* Reveal sits *inside* the sticky box, never around it: it leaves a
-                residual `filter: blur(0px)` behind, and a filter — like a
-                transform — makes its element a containing block, which would
-                quietly stop the sticky child from ever pinning. `blur={false}`
-                also keeps the filter off the big pinned surfaces. */}
-            <Reveal blur={false}>
-              <ExperienceCard job={job} />
-            </Reveal>
-          </li>
-        ))}
+        {experience.map((job, i) => {
+          /* Two custom properties rather than `top` directly, and rather than one
+             resolved value: `top` on a non-sticky box would still offset it, and
+             under reduced motion these cards are not sticky at all — so the
+             properties sit inert until the stylesheet reads them. Which of the
+             two it reads is decided by the breakpoint, and that is how the deck
+             ends up with a shorter step on a phone. */
+          const stack = {
+            "--stack-top": `${STACK_TOP.phone + i * STACK_STEP.phone}px`,
+            "--stack-top-md": `${STACK_TOP.desktop + i * STACK_STEP.desktop}px`,
+          } as CSSProperties;
+
+          return (
+            <li
+              key={job.company}
+              data-tone={job.tone}
+              className="stack-item"
+              style={stack}
+            >
+              {/* Reveal sits *inside* the sticky box, never around it: it leaves
+                  a residual `filter: blur(0px)` behind, and a filter — like a
+                  transform — makes its element a containing block, which would
+                  quietly stop the sticky child from ever pinning. `blur={false}`
+                  also keeps the filter off the big pinned surfaces. */}
+              <Reveal blur={false}>
+                <ExperienceCard job={job} />
+              </Reveal>
+            </li>
+          );
+        })}
 
         {/* Trailing room, and it has to be in here: the entries' containing block
             is this list, so the last card can only pin for as long as the list
@@ -184,9 +196,9 @@ export default function Experience() {
             arrived instead of settling over the card beneath it.
 
             An empty `<li>` because an `<ol>` may not hold anything else. Hidden
-            wherever the deck isn't running — a phone, or reduced motion — where
-            it would just be a dead stretch of ground at the end of the section. */}
-        <li aria-hidden="true" className="hidden h-[30vh] md:motion-safe:block" />
+            under reduced motion, where the deck isn't running and it would just
+            be a dead stretch of ground at the end of the section. */}
+        <li aria-hidden="true" className="hidden h-[30vh] motion-safe:block" />
       </ol>
     </Section>
   );

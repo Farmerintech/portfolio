@@ -393,31 +393,29 @@ html.theme-anim *::after {
    behaviour this replaced. The overlap needs no z-index — the cards are in flow
    in DOM order, so later ones paint over earlier ones already.
 
-   `--stack-top` comes from the component, one step per card, so the deck shows a
-   band of everything underneath.
+   `--stack-top` comes from the component — one value per card, and a second set
+   of values under `md`, because a phone has far less vertical room to spend on
+   the step down than a desktop does.
 
-   Held back to `md` and up, and switched off again under reduced motion: on a
-   phone these cards are taller than the viewport, so pinning one would hold its
-   top on screen and hide its bottom — the text would be unreachable. Below `md`,
-   and for anyone who has asked for less motion, the list stays a plain column.
+   Off again under reduced motion: for anyone who has asked for less motion the
+   list stays a plain column.
    -------------------------------------------------------------------------- */
 .stack-item {
-  position: relative;
+  position: sticky;
+  top: var(--stack-top, 5rem);
+  /* How long a card holds, and the only dial that controls it. A card stays put
+     until the next one reaches it, which is one entry-height of scrolling away —
+     so giving every entry a floor of half a screen sets the hold at ~50vh
+     whatever height the copy inside happens to come to. The floor is what
+     matters on a tall display: these cards are text, so on a big monitor they
+     would otherwise be short enough to be covered almost as soon as they
+     arrived. Where the cards are already past the floor it does nothing. */
+  min-height: 50vh;
 }
 
 @media (min-width: 48rem) {
   .stack-item {
-    position: sticky;
-    top: var(--stack-top, 7rem);
-    /* How long a card holds, and the only dial that controls it. A card stays
-       put until the next one reaches it, which is one entry-height of scrolling
-       away — so giving every entry a floor of half a screen sets the hold at
-       ~50vh whatever height the copy inside happens to come to. The floor is
-       what matters on a tall display: these cards are text, so on a big monitor
-       they would otherwise be short enough to be covered almost as soon as they
-       arrived. On a shorter one the cards are already past the floor and it
-       does nothing. */
-    min-height: 50vh;
+    top: var(--stack-top-md, 7rem);
   }
 }
 
@@ -425,9 +423,9 @@ html.theme-anim *::after {
   .stack-item {
     position: relative;
     top: auto;
-    /* `min-height` and not just the position: it is declared in the query above
-       and would otherwise stand, leaving half a screen of empty ground between
-       cards in what is meant to be a plain list. */
+    /* `min-height` and not just the position: it is declared above and would
+       otherwise stand, leaving half a screen of empty ground between cards in
+       what is meant to be a plain list. */
     min-height: auto;
   }
 }
