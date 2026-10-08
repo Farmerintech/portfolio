@@ -222,7 +222,10 @@ export default function Projects() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                {label}
+                {label}{" "}
+                <span className="font-mono text-xs opacity-70">
+                  ({shown(key).length})
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
